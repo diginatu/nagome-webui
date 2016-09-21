@@ -1,0 +1,13 @@
+{
+    "ecmaVersion": 6,
+    "libs": [
+        "browser"
+    ],
+    "plugins": {
+        "requirejs": {},
+        "modules": {},
+        "es_modules":{}
+    },
+    "loadEagerly": [
+    ]
+}

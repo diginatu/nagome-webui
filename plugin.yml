@@ -1,0 +1,11 @@
+name: websocket_connection
+description: serve websocket connection like TCP of Nagome
+version: "1.0"
+author: diginatu
+method: tcp
+exec:
+- '{{path}}/websocket_connection'
+- '{{port}}'
+- '{{no}}'
+nagomever: ""
+depends:
