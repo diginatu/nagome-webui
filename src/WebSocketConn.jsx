@@ -1,28 +1,39 @@
 import { Component } from 'react';
+import ons from 'onsenui';
 
-class WebSocketConn extends Component {
-    addMessage(m) {
-        document.getElementById("output").textContent += m + "\n";
+export default class WebSocketConn extends Component {
+    handleMessage(jsonm) {
+        const m = JSON.parse(jsonm);
+        switch (m.domain) {
+        case 'nagome_comment':
+            if (m.command === "Got") {
+                this.props.onMessageChange(m.content);
+            }
+            break;
+        default:
+            console.log(m);
+        }
     }
 
-    send(m) {
-        this.wsconn.send(m);
+    send(jsonm) {
+        this.wsconn.send(jsonm);
     }
 
     connect() {
         if (!("WebSocket" in window)) {
-            alert("WebSocket NOT supported by your Browser!");
+            ons.notification.alert("WebSocket NOT supported by your Browser!");
             return;
         }
 
         this.wsconn = new WebSocket("ws://localhost:8753/ws");
 
         this.wsconn.onerror = (err) => {
+            ons.notification.alert("connection error");
             console.log(err);
         };
 
         this.wsconn.onopen = () => {
-            document.getElementById("output").textContent += "conected\n";
+            console.log("open");
         };
 
         this.remainMes = "";
@@ -30,13 +41,11 @@ class WebSocketConn extends Component {
             let ms = m.data.split("\n");
             ms[0] = this.remainMes + ms[0];
             this.remainMes = ms.pop();
-            for (let i = ms.length - 1; i >= 0; i--) {
-                this.addMessage(ms[i]);
-            }
-        };
+            ms.forEach(this.handleMessage, this);
+        }.bind(this);
 
         this.wsconn.onclose = () => {
-            document.getElementById("output").textContent += "closed\n";
+            console.log("close");
         };
 
         window.addEventListener("beforeunload", function (event) {
@@ -45,12 +54,10 @@ class WebSocketConn extends Component {
     }
 
     componentDidMount() {
-        setTimeout(this.connect, 3000);
+        this.connect();
     }
 
     render() {
         return null;
     }
-}
-
-export default WebSocketConn;
+};
