@@ -1,11 +1,11 @@
-name: websocket_connection
-description: serve websocket connection like TCP of Nagome
-version: "1.0"
+name: webui
+description: "Web UI for Nagome"
+version: "0.1"
 author: diginatu
-method: tcp
+method: std
 exec:
-- '{{path}}/websocket_connection'
-- '{{port}}'
-- '{{no}}'
 nagomever: ""
 depends:
+- nagome
+- nagome_ui
+- nagome_comment

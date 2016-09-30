@@ -1,11 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"os/exec"
+	"sync"
 	"unicode/utf8"
 
 	"golang.org/x/net/websocket"
@@ -16,11 +19,22 @@ const (
 )
 
 var (
-	ngmr io.ReadCloser
-	ngmw io.WriteCloser
+	ngmr      io.ReadCloser
+	ngmw      io.WriteCloser
+	wscs      []*websocket.Conn
+	mu        sync.Mutex
+	connected = make(chan struct{})
 )
 
-func utf8SafeCopy(dst io.Writer, src io.Reader) (written int64, err error) {
+// Config is struct for server_config.json
+type Config struct {
+	Port       string   `json:"port"`
+	RootURI    string   `json:"root_uri"`
+	RootDir    string   `json:"root_dir"`
+	NagomeExec []string `json:"nagome_exec"`
+}
+
+func utf8SafeWrite(src io.Reader) error {
 	var utf8tmp []byte
 	buf := make([]byte, 32*1024)
 
@@ -52,42 +66,63 @@ read:
 					}
 				}
 			}
-			nw, ew := dst.Write(rb)
-			if nw > 0 {
-				written += int64(nw)
+
+			mu.Lock()
+			for _, c := range wscs {
+				if c == nil {
+					continue
+				}
+				nw, ew := c.Write(rb)
+				if ew != nil {
+					fmt.Println(ew)
+					continue
+				}
+				if nr != nw {
+					err := io.ErrShortWrite
+					fmt.Println(err)
+					continue
+				}
 			}
-			if ew != nil {
-				err = ew
-				break
-			}
-			if nr != nw {
-				err = io.ErrShortWrite
-				break
-			}
+			mu.Unlock()
 		}
 		if er == io.EOF {
-			break
+			return nil
 		}
 		if er != nil {
-			err = er
-			break
+			return er
 		}
 	}
-	return written, err
+
+	return nil
 }
 
 // BridgeServer receive a connection
 func BridgeServer(wsc *websocket.Conn) {
 	fmt.Println("connected to a client")
-	go func() {
-		_, err := io.Copy(ngmw, wsc)
-		if err != nil {
-			fmt.Println(err)
-			return
+	var no int
+
+	mu.Lock()
+	bl := false
+	for i, v := range wscs {
+		if v == nil {
+			no = i
+			wscs[i] = wsc
+			bl = true
+			break
 		}
+	}
+	if !bl {
+		no = len(wscs)
+		wscs = append(wscs, wsc)
+	}
+	mu.Unlock()
+	defer func() {
+		mu.Lock()
+		wscs[no] = nil
+		mu.Unlock()
 	}()
 
-	_, err := utf8SafeCopy(wsc, ngmr)
+	_, err := io.Copy(ngmw, wsc)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -98,8 +133,24 @@ func BridgeServer(wsc *websocket.Conn) {
 func main() {
 	var err error
 
+	file, err := os.Open("./server_config.json")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	d := json.NewDecoder(file)
+	var c Config
+	if err = d.Decode(&c); err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	// connect to Nagome
-	cmd := exec.Command("nagome")
+	if len(c.NagomeExec) == 0 {
+		fmt.Println("NagomeExec has not any command")
+		return
+	}
+	cmd := exec.Command(c.NagomeExec[0], c.NagomeExec[1:]...)
 	ngmw, err = cmd.StdinPipe()
 	if err != nil {
 		log.Println(err)
@@ -118,12 +169,19 @@ func main() {
 		return
 	}
 
-	fmt.Println("http://localhost:" + defaultPort + "/app")
+	fmt.Println(c.RootURI)
+
+	go func() {
+		err = utf8SafeWrite(ngmr)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}()
 
 	// serve
 	http.Handle("/ws", websocket.Handler(BridgeServer))
-	http.Handle("/app/", http.StripPrefix("/app/", http.FileServer(http.Dir("./build"))))
-	err = http.ListenAndServe(":"+defaultPort, nil)
+	http.Handle("/app/", http.StripPrefix("/app/", http.FileServer(http.Dir(c.RootDir))))
+	err = http.ListenAndServe(":"+c.Port, nil)
 	if err != nil {
 		panic("ListenAndServe: " + err.Error())
 	}
