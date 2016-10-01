@@ -3,23 +3,34 @@ import React, { Component } from 'react';
 import {Splitter, SplitterSide, SplitterContent, Page,
     Toolbar, ToolbarButton, Icon} from 'react-onsenui';
 
-import Ngmcon, {ngm} from './NagomeConn.js';
+import {ngm, NagomeInit} from './NagomeConn.js';
 
 import Comment from './Comment.jsx';
 import Menu from './Menu.jsx';
 
 export default class App extends Component {
-    nagomeEventHandler(type, con) {
-        switch (type) {
-        case Ngmcon.EventType.comment:
-            console.log(con);
-            let comment = this.refs.comment;
-            comment.setState({
-                data: comment.state.data.concat([con])
-            });
+    nagomeEventHandler(m) {
+        let comment = this.refs.comment;
+
+        switch (m.domain) {
+        case 'nagome_comment':
+            if (m.command === "Got") {
+                comment.setState({
+                    data: comment.state.data.concat([m.content])
+                });
+            }
+            break;
+        case 'nagome_ui':
+            switch (m.command) {
+            case "ClearComments":
+                comment.setState({ data: [] });
+                break;
+            default:
+                console.log(m);
+            }
             break;
         default:
-            console.log("unknown event", con);
+            console.log(m);
         }
     }
 
@@ -27,7 +38,7 @@ export default class App extends Component {
         super();
         this.state = {isOpen: false};
 
-        Ngmcon.Init(this.nagomeEventHandler.bind(this));
+        NagomeInit(this.nagomeEventHandler.bind(this));
         ngm.connectWs();
     }
 
@@ -47,7 +58,7 @@ export default class App extends Component {
                         <Icon icon='ion-navicon, material:md-menu' />
                     </ToolbarButton>
                 </div>
-                <div className='center'>Side menu</div>
+                <div className='center'>Nagome</div>
             </Toolbar>
             );
     }
@@ -78,5 +89,3 @@ export default class App extends Component {
             );
     }
 }
-
-//<WebSocketConn />

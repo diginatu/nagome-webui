@@ -23,7 +23,7 @@ export default class CommentList extends Component {
     render() {
         return (
             <List dataSource={this.props.data} renderRow={this.renderRow}
-                renderHeader={() => <ListHeader>Comment List</ListHeader>} />
+                renderHeader={() => <ListHeader>Comments</ListHeader>} />
             );
     }
 }

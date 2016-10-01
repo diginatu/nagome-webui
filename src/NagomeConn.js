@@ -5,10 +5,6 @@ export var ngm;
 var eventHdlr;
 var wsconn;
 
-const EventType = {
-    comment: 0
-};
-
 class WebSocketConn {
     send(jsonm) {
         wsconn.send(jsonm);
@@ -55,16 +51,7 @@ class Ngmconn {
     }
 
     handleMessage(jsonm) {
-        const m = JSON.parse(jsonm);
-        switch (m.domain) {
-        case 'nagome_comment':
-            if (m.command === "Got") {
-                eventHdlr(EventType.comment, m.content);
-            }
-            break;
-        default:
-            console.log(m);
-        }
+        eventHdlr(JSON.parse(jsonm));
     }
 
     connectWs() {
@@ -93,13 +80,6 @@ class Ngmconn {
     }
 }
 
-var Init = (eventHandler) => {
+export var NagomeInit = (eventHandler) => {
     ngm = new Ngmconn(eventHandler);
 };
-
-var NagomeConn = {
-    Init: Init,
-    EventType: EventType
-};
-
-export default NagomeConn;
