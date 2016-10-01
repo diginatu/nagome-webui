@@ -7,6 +7,7 @@ import {ngm, NagomeInit} from './NagomeConn.js';
 
 import Comment from './Comment.jsx';
 import Menu from './Menu.jsx';
+import BottomCommentBar from './BottomCommentBar.jsx';
 
 export default class App extends Component {
     nagomeEventHandler(m) {
@@ -84,6 +85,7 @@ export default class App extends Component {
                     <Page renderToolbar={this.renderToolbar.bind(this)}>
                         <Comment ref="comment" />
                     </Page>
+                    <BottomCommentBar />
                 </SplitterContent>
             </Splitter>
             );

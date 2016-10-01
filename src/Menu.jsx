@@ -10,8 +10,9 @@ export default class Menu extends Component {
             {text: "Connect", fn: () => {
                 ons.notification.prompt('Input Live ID or URI').then(
                     (br) => {
-                        console.log(br);
-                        ngm.broadConnect(br);
+                        if (br !== "") {
+                            ngm.broadConnect(br);
+                        }
                     }
                 );
             }},
