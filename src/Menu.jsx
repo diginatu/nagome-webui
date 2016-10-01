@@ -14,8 +14,10 @@ export default class Menu extends Component {
                         ngm.broadConnect(br);
                     }
                 );
-                console.log("connect");
-            }}
+            }},
+            {text: "Disconnect", fn: () => {
+                ngm.broadDisconnect();
+            }},
         ];
     }
 
