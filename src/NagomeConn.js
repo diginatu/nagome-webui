@@ -19,7 +19,14 @@ class WebSocketConn {
             ons.notification.alert("WebSocket NOT supported by your Browser!");
         }
 
-        wsconn = new WebSocket("ws://localhost:8753/ws");
+        // make absolute ws uri
+        let loc = window.location, prot;
+        if (loc.protocol === "https:") {
+            prot = "wss:";
+        } else {
+            prot = "ws:";
+        }
+        wsconn = new WebSocket(`${prot}//${loc.host}/ws`);
 
         wsconn.onerror = (err) => {
             console.log(err);
