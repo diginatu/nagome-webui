@@ -14,6 +14,10 @@ class WebSocketConn {
         wsconn.send(jsonm);
     }
 
+    sendObj(obj) {
+        wsconn.send( JSON.stringify(obj) );
+    }
+
     connect(messageHandler) {
         if (!("WebSocket" in window)) {
             ons.notification.alert("WebSocket NOT supported by your Browser!");
@@ -65,6 +69,27 @@ class Ngmconn {
 
     connectWs() {
         this.ws.connect(this.handleMessage);
+    }
+
+    broadConnect(uri) {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_query",
+                "command": "Broad.Connect",
+                "content": {
+                    "broad_id": uri
+                }
+            }
+        );
+    }
+
+    broadDisconnect() {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_query",
+                "command": "Broad.Disconnect"
+            }
+        );
     }
 }
 
