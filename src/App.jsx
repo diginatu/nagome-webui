@@ -3,13 +3,32 @@ import React, { Component } from 'react';
 import {Splitter, SplitterSide, SplitterContent, Page,
     Toolbar, ToolbarButton, Icon} from 'react-onsenui';
 
+import Ngmcon, {ngm} from './NagomeConn.js';
+
 import Comment from './Comment.jsx';
 import Menu from './Menu.jsx';
 
 export default class App extends Component {
+    nagomeEventHandler(type, con) {
+        switch (type) {
+        case Ngmcon.EventType.comment:
+            console.log(con);
+            let comment = this.refs.comment;
+            comment.setState({
+                data: comment.state.data.concat([con])
+            });
+            break;
+        default:
+            console.log("unknown event", con);
+        }
+    }
+
     constructor() {
         super();
         this.state = {isOpen: false};
+
+        Ngmcon.Init(this.nagomeEventHandler.bind(this));
+        ngm.connectWs();
     }
 
     hideMenu() {
