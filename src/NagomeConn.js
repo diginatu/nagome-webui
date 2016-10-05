@@ -1,8 +1,10 @@
 import ons from 'onsenui';
 export var ngm;
 
-// function (EVENTTYPE type, object content)
-var eventHdlr;
+// function (object nagomeMessage)
+var messageHdlr;
+// function (string event)
+var wsEventHdlr;
 var wsconn;
 
 class WebSocketConn {
@@ -16,7 +18,7 @@ class WebSocketConn {
 
     connect(messageHandler) {
         if (!("WebSocket" in window)) {
-            ons.notification.alert("WebSocket NOT supported by your Browser!");
+            ons.notification.alert("WebSocket NOT supported by this browser");
         }
 
         if (process.env.NODE_ENV === "development") {
@@ -34,11 +36,11 @@ class WebSocketConn {
 
         wsconn.onerror = (err) => {
             console.log(err);
-            ons.notification.alert("connection error");
+            wsEventHdlr("err");
         };
 
         wsconn.onopen = () => {
-            console.log("open");
+            wsEventHdlr("open");
         };
 
         this.remainMes = "";
@@ -50,19 +52,20 @@ class WebSocketConn {
         }.bind(this);
 
         wsconn.onclose = () => {
-            console.log("close");
+            wsEventHdlr("close");
         };
     }
 }
 
 class Ngmconn {
-    constructor(eventHandler) {
+    constructor(nagomeEventHandler, websocketEventHandler) {
         this.ws = new WebSocketConn();
-        eventHdlr = eventHandler;
+        messageHdlr = nagomeEventHandler;
+        wsEventHdlr = websocketEventHandler;
     }
 
     handleMessage(jsonm) {
-        eventHdlr(JSON.parse(jsonm));
+        messageHdlr(JSON.parse(jsonm));
     }
 
     connectWs() {
@@ -91,6 +94,6 @@ class Ngmconn {
     }
 }
 
-export var NagomeInit = (eventHandler) => {
-    ngm = new Ngmconn(eventHandler);
+export var NagomeInit = (nagomeEventHandler, websocketEventHandler) => {
+    ngm = new Ngmconn(nagomeEventHandler, websocketEventHandler);
 };
