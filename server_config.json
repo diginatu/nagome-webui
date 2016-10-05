@@ -6,5 +6,6 @@
         "nagome",
         "-y",
         "./plugin.yml"
-    ]
+    ],
+    "app_mode" : true
 }

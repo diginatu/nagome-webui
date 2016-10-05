@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"sync"
+	"time"
 	"unicode/utf8"
 
 	"golang.org/x/net/websocket"
@@ -24,6 +25,7 @@ var (
 	wscs      []*websocket.Conn
 	mu        sync.Mutex
 	connected = make(chan struct{})
+	clientswg sync.WaitGroup
 )
 
 // Config is struct for server_config.json
@@ -32,6 +34,7 @@ type Config struct {
 	RootURI    string   `json:"root_uri"`
 	RootDir    string   `json:"root_dir"`
 	NagomeExec []string `json:"nagome_exec"`
+	AppMode    bool     `json:"app_mode"`
 }
 
 func utf8SafeWrite(src io.Reader) error {
@@ -98,7 +101,15 @@ read:
 
 // BridgeServer receive a connection
 func BridgeServer(wsc *websocket.Conn) {
+	clientswg.Add(1)
+	defer clientswg.Done()
 	fmt.Println("connected to a client")
+	select {
+	default:
+		close(connected)
+	case <-connected:
+	}
+
 	var no int
 
 	mu.Lock()
@@ -177,6 +188,24 @@ func main() {
 			fmt.Println(err)
 		}
 	}()
+
+	if c.AppMode {
+		// quit if not connected a while
+		go func() {
+			select {
+			case <-time.After(time.Minute):
+				fmt.Println("closing...\nnot connected a while")
+				os.Exit(0)
+			case <-connected:
+			}
+		}()
+
+		go func() {
+			<-connected
+			clientswg.Wait()
+			os.Exit(0)
+		}()
+	}
 
 	// serve
 	http.Handle("/ws", websocket.Handler(BridgeServer))
