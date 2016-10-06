@@ -65,7 +65,12 @@ class Ngmconn {
     }
 
     handleMessage(jsonm) {
-        messageHdlr(JSON.parse(jsonm));
+        try {
+            messageHdlr(JSON.parse(jsonm));
+        } catch (e) {
+            console.log(e);
+            console.log(jsonm);
+        }
     }
 
     connectWs() {
@@ -79,6 +84,19 @@ class Ngmconn {
                 "command": "Broad.Connect",
                 "content": {
                     "broad_id": uri
+                }
+            }
+        );
+    }
+
+    sendMessage(t, iyayo = false) {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_query",
+                "command": "Broad.SendComment",
+                "content": {
+                    "text": t,
+                    "iyayo": iyayo
                 }
             }
         );

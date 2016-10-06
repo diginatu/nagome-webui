@@ -100,11 +100,13 @@ export default class App extends Component {
                     <Menu onSelect={this.setMenu.bind(this, false)} />
                 </SplitterSide>
                 <SplitterContent>
-                    <Page renderToolbar={this.renderToolbar.bind(this)}>
+                    <Page
+                        renderToolbar={this.renderToolbar.bind(this)}
+                        renderBottomToolbar={()=> <BottomCommentBar /> }>
                         <Dialog isOpen={this.state.isConnecting} >
                             <div style={{
                                 display: "flex",
-                                "align-items": "center"
+                                alignItems: "center"
                             }}>
                             <ProgressCircular style={{"margin": "20px"}} indeterminate />
                             <p>Connecting...</p>
@@ -112,7 +114,6 @@ export default class App extends Component {
                         </Dialog>
                         <Comment ref="comment" />
                     </Page>
-                    <BottomCommentBar />
                 </SplitterContent>
             </Splitter>
             );

@@ -8,13 +8,16 @@ export default class Menu extends Component {
     componentWillMount() {
         this.menuList = [
             {text: "Connect", fn: () => {
-                ons.notification.prompt('Input Live ID or URI').then(
-                    (br) => {
-                        if (br !== "") {
+                ons.notification.prompt({
+                    title: 'Connect',
+                    message: 'Input Live ID or URI',
+                    cancelable: true,
+                    callback: (br) => {
+                        if (br !== "" && br !== null) {
                             ngm.broadConnect(br);
                         }
-                    }
-                );
+                    },
+                });
             }},
             {text: "Disconnect", fn: () => {
                 ngm.broadDisconnect();

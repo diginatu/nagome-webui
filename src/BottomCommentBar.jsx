@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Input, BottomToolbar, Button} from 'react-onsenui';
 
-//import {ngm} from './NagomeConn.js';
+import {ngm} from './NagomeConn.js';
 
 const initialStatus = {text: ""};
 
@@ -12,6 +12,7 @@ export default class App extends Component {
     }
 
     sendComment() {
+        ngm.sendMessage(this.state.text);
         this.setState(initialStatus);
     }
 
