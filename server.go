@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"runtime"
 	"sync"
 	"time"
 	"unicode/utf8"
@@ -26,6 +27,7 @@ var (
 	mu        sync.Mutex
 	connected = make(chan struct{})
 	clientswg sync.WaitGroup
+	appMode   bool
 )
 
 // Config is struct for server_config.json
@@ -101,14 +103,25 @@ read:
 
 // BridgeServer receive a connection
 func BridgeServer(wsc *websocket.Conn) {
-	clientswg.Add(1)
-	defer clientswg.Done()
-	fmt.Println("connected to a client")
-	select {
-	default:
-		close(connected)
-	case <-connected:
+	if appMode {
+		clientswg.Add(1)
+		defer clientswg.Done()
+		select {
+		case connected <- struct{}{}:
+		default:
+		}
 	}
+
+	memStats := &runtime.MemStats{}
+	runtime.ReadMemStats(memStats)
+	fmt.Println("goroutines", (runtime.NumGoroutine()))
+	fmt.Println("memory.allocated", (memStats.Alloc))
+	fmt.Println("memory.mallocs", (memStats.Mallocs))
+	fmt.Println("memory.frees", (memStats.Frees))
+	fmt.Println("memory.heap", (memStats.HeapAlloc))
+	fmt.Println("memory.stack", (memStats.StackInuse))
+	fmt.Println("writer array", wscs)
+	fmt.Println()
 
 	var no int
 
@@ -190,20 +203,25 @@ func main() {
 	}()
 
 	if c.AppMode {
-		// quit if not connected a while
+		appMode = true
 		go func() {
+			// quit if not connected a while
 			select {
 			case <-time.After(time.Minute):
-				fmt.Println("closing...\nnot connected a while")
+				fmt.Println("closing...\nNot connected a while")
 				os.Exit(0)
 			case <-connected:
 			}
-		}()
-
-		go func() {
-			<-connected
-			clientswg.Wait()
-			os.Exit(0)
+			// quit when all clients are disconnected
+			for {
+				clientswg.Wait()
+				select {
+				case <-time.After(2 * time.Second):
+					fmt.Println("closing...\nAll clients are disconnected")
+					os.Exit(0)
+				case <-connected:
+				}
+			}
 		}()
 	}
 
