@@ -13,9 +13,7 @@ export default class Menu extends Component {
                     message: 'Input Live ID or URI',
                     cancelable: true,
                     callback: (br) => {
-                        if (br !== "" && br !== null) {
-                            ngm.broadConnect(br);
-                        }
+                        ngm.broadConnect(br);
                     },
                 });
             }},

@@ -78,15 +78,17 @@ class Ngmconn {
     }
 
     broadConnect(uri) {
-        this.ws.sendObj(
-            {
-                "domain": "nagome_query",
-                "command": "Broad.Connect",
-                "content": {
-                    "broad_id": uri
+        if (uri !== "" && uri !== null) {
+            this.ws.sendObj(
+                {
+                    "domain": "nagome_query",
+                    "command": "Broad.Connect",
+                    "content": {
+                        "broad_id": uri
+                    }
                 }
-            }
-        );
+            );
+        }
     }
 
     sendMessage(t, iyayo = false) {
