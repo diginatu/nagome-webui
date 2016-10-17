@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Page, List, ListItem} from 'react-onsenui';
+import {Page, List, ListItem, Icon} from 'react-onsenui';
 import ons from 'onsenui';
 
 import {ngm} from './NagomeConn.js';
@@ -7,22 +7,28 @@ import {ngm} from './NagomeConn.js';
 export default class Menu extends Component {
     componentWillMount() {
         this.menuList = [
-            {text: "Connect to URI", fn: () => {
-                ons.notification.prompt({
-                    title: 'Connect',
-                    message: 'Input Live ID or URI',
-                    cancelable: true,
-                    callback: (br) => {
-                        ngm.broadConnect(br);
-                    },
-                });
-            }},
-            {text: "Disconnect", fn: () => {
-                ngm.broadDisconnect();
-            }},
-            {text: "Clear comments", fn: () => {
-                ngm.clearComments();
-            }},
+            { text: "Connect to URI",
+                icon: "fa-link",
+                fn: () => {
+                    ons.notification.prompt({
+                        title: 'Connect',
+                        message: 'Input Live ID or URI',
+                        cancelable: true,
+                        callback: (br) => {
+                            ngm.broadConnect(br);
+                        },
+                    });
+                }},
+            {text: "Disconnect",
+                icon: "fa-minus-circle",
+                fn: () => {
+                    ngm.broadDisconnect();
+                }},
+            {text: "Clear comments",
+                icon: "fa-file-o",
+                fn: () => {
+                    ngm.clearComments();
+                }},
         ];
     }
 
@@ -38,6 +44,7 @@ export default class Menu extends Component {
                     dataSource={this.menuList}
                     renderRow={(m) => (
                         <ListItem key={m.text} onClick={this.handleMenuSelect.bind(this, m.fn)} tappable >
+                            <Icon icon={m.icon} style={{margin: "7px"}} />
                             {m.text}
                         </ListItem>
                     )}
