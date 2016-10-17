@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Icon} from 'react-onsenui';
+import ons from 'onsenui';
 
 // Only display and not catch actual dropping.
 export default class DropArea extends Component {
@@ -24,9 +25,12 @@ export default class DropArea extends Component {
 
 
     render() {
+        if (ons.platform.isIOS() || ons.platform.isAndroid() || ons.platform.isBlackBerry()) {
+            return null;
+        }
         return (
             <div style={{
-                border: `dashed ${this.state.dropping?7:5}px #BBB`,
+                border: `dashed ${this.state.dropping?6:4}px #BBB`,
                 flex: "1 0 10px",
                 borderRadius: "30px",
                 margin: "10px",
@@ -34,6 +38,7 @@ export default class DropArea extends Component {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
+                backgroundColor: this.state.dropping?"rgb(236, 236, 236)":"rgb(255, 255, 255)",
                 color: "rgb(90, 90, 90)",
             }}
                 onDragOver={this.handleDropOver.bind(this)}

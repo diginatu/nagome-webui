@@ -37,7 +37,7 @@ export default class App extends Component {
                         }}
                         placeholder='Input message'
                     />
-                    <Button modifier='quiet' onClick={this.sendComment.bind(this)} >
+                    <Button modifier='quiet' onClick={this.sendComment.bind(this)}>
                     Send
                     </Button>
                 </div>
