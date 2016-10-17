@@ -7,7 +7,7 @@ import {ngm} from './NagomeConn.js';
 export default class Menu extends Component {
     componentWillMount() {
         this.menuList = [
-            {text: "Connect", fn: () => {
+            {text: "Connect to URI", fn: () => {
                 ons.notification.prompt({
                     title: 'Connect',
                     message: 'Input Live ID or URI',
@@ -19,6 +19,9 @@ export default class Menu extends Component {
             }},
             {text: "Disconnect", fn: () => {
                 ngm.broadDisconnect();
+            }},
+            {text: "Clear comments", fn: () => {
+                ngm.clearComments();
             }},
         ];
     }

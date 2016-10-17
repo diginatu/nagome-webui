@@ -12,7 +12,7 @@ export default class App extends Component {
     }
 
     sendComment() {
-        ngm.sendMessage(this.state.text);
+        ngm.sendComment(this.state.text);
         this.setState(initialStatus);
     }
 

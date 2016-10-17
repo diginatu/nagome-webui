@@ -91,7 +91,16 @@ class Ngmconn {
         }
     }
 
-    sendMessage(t, iyayo = false) {
+    broadDisconnect() {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_query",
+                "command": "Broad.Disconnect"
+            }
+        );
+    }
+
+    sendComment(t, iyayo = false) {
         this.ws.sendObj(
             {
                 "domain": "nagome_query",
@@ -104,13 +113,14 @@ class Ngmconn {
         );
     }
 
-    broadDisconnect() {
+    clearComments() {
         this.ws.sendObj(
             {
-                "domain": "nagome_query",
-                "command": "Broad.Disconnect"
+                "domain": "nagome_ui",
+                "command": "ClearComments"
             }
         );
+
     }
 }
 
