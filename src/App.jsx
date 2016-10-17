@@ -43,7 +43,7 @@ export default class App extends Component {
         switch (e) {
         case 'close':
             t.isConnecting = true;
-            window.setTimeout(ngm.connectWs.bind(ngm), 3000);
+            window.setTimeout(ngm.connectWs.bind(ngm), 5000);
             break;
         case 'err':
             t.isConnecting = true;
@@ -103,13 +103,14 @@ export default class App extends Component {
                     <Page
                         renderToolbar={this.renderToolbar.bind(this)}
                         renderBottomToolbar={()=> <BottomCommentBar /> }>
-                        <Dialog isOpen={this.state.isConnecting} >
+                        <Dialog isOpen={this.state.isConnecting}
+                            isCancelable={false}>
                             <div style={{
                                 display: "flex",
                                 alignItems: "center"
                             }}>
-                            <ProgressCircular style={{"margin": "20px"}} indeterminate />
-                            <p>Connecting...</p>
+                                <ProgressCircular style={{"margin": "20px"}} indeterminate />
+                                <p>Connecting...</p>
                             </div>
                         </Dialog>
                         <Comment ref="comment" />
