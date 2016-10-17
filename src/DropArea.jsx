@@ -43,9 +43,9 @@ export default class DropArea extends Component {
             }}
                 onDragOver={this.handleDropOver.bind(this)}
                 onDragLeave={this.handleDropLeave.bind(this)} >
-                <div style={{fontSize: "50px"}}><Icon icon="ion-link" /></div>
-                <div style={{fontSize: "20px"}}><Icon icon="ion-chevron-down" /></div>
-                <div style={{fontSize: "20px", marginTop: "10px"}}>Drop link here</div>
+                <Icon size={50} icon="ion-link" />
+                <Icon size={20} icon="ion-chevron-down" />
+                <p style={{fontSize: "20px"}}>Drop link here</p>
             </div>
             );
     }
