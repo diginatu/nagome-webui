@@ -18,7 +18,7 @@ class WebSocketConn {
 
     connect(messageHandler) {
         if (!("WebSocket" in window)) {
-            ons.notification.alert("WebSocket NOT supported by this browser");
+            ons.notification.alert("WebSocket is NOT supported by this browser");
         }
 
         if (process.env.NODE_ENV === "development") {
@@ -48,7 +48,7 @@ class WebSocketConn {
             let ms = m.data.split("\n");
             ms[0] = this.remainMes + ms[0];
             this.remainMes = ms.pop();
-            ms.forEach(messageHandler, this);
+            messageHandler(ms);
         }.bind(this);
 
         wsconn.onclose = () => {
@@ -64,13 +64,19 @@ class Ngmconn {
         wsEventHdlr = websocketEventHandler;
     }
 
-    handleMessage(jsonm) {
-        try {
-            messageHdlr(JSON.parse(jsonm));
-        } catch (e) {
-            console.log(e);
-            console.log(jsonm);
+    handleMessage(jsonArrM) {
+        let arrM = [];
+        let m;
+        for (let i = 0, len = jsonArrM.length; i < len; i++) {
+            try {
+                m = JSON.parse(jsonArrM[i]);
+            } catch (e) {
+                console.log(e);
+                console.log(jsonArrM[i]);
+            }
+            arrM.push(m);
         }
+        messageHdlr(arrM);
     }
 
     connectWs() {

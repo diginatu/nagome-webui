@@ -16,41 +16,46 @@ window.setInterval(()=>{
 }, 10 * 1000);
 
 export default class App extends Component {
-    nagomeEventHandler(m) {
+    nagomeEventHandler(arrM) {
         let comment = this.refs.comment;
+        let vstate = comment.state;
+        for (let i = 0, len = arrM.length; i < len; i++) {
+            let m = arrM[i];
 
-        switch (m.domain) {
-        case 'nagome_comment':
-            if (m.command === "Got") {
-                console.log(m.content.user_thumbnail_url);
-                if (m.content.user_thumbnail_url!==undefined) {
-                    console.log(availableThumPer10s);
-                    if (availableThumPer10s <= 0) {
-                        m.content.user_thumbnail_url = "";
-                    } else {
-                        availableThumPer10s --;
-                        m.content.user_thumbnail_url.replace("usericon/", "usericon/s/");
+            switch (m.domain) {
+            case 'nagome_comment':
+                if (m.command === "Got") {
+                    console.log(m.content.user_thumbnail_url);
+                    if (m.content.user_thumbnail_url!==undefined) {
+                        console.log(availableThumPer10s);
+                        if (availableThumPer10s <= 0) {
+                            m.content.user_thumbnail_url = "";
+                        } else {
+                            availableThumPer10s --;
+                            m.content.user_thumbnail_url.replace("usericon/", "usericon/s/");
+                        }
                     }
+                    m.content.date = m.content.date.split(RegExp('[T.]'))[1];
+                    vstate.data.push(m.content);
+                } else {
+                    console.log(m);
                 }
-                m.content.date = m.content.date.split(RegExp('[T.]'))[1];
-
-                comment.setState({
-                    data: comment.state.data.concat([m.content])
-                });
-            }
-            break;
-        case 'nagome_ui':
-            switch (m.command) {
-            case "ClearComments":
-                comment.setState({ data: [] });
+                break;
+            case 'nagome_ui':
+                switch (m.command) {
+                case "ClearComments":
+                    vstate = { data: [] };
+                    break;
+                default:
+                    console.log(m);
+                }
                 break;
             default:
                 console.log(m);
             }
-            break;
-        default:
-            console.log(m);
         }
+
+        comment.setState(vstate);
     }
 
     websocketEventHandler(e) {
