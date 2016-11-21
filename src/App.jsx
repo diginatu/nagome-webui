@@ -10,6 +10,11 @@ import Comment from './Comment.jsx';
 import Menu from './Menu.jsx';
 import BottomCommentBar from './BottomCommentBar.jsx';
 
+let availableThumPer10s = 5;
+window.setInterval(()=>{
+    availableThumPer10s = 5;
+}, 10 * 1000);
+
 export default class App extends Component {
     nagomeEventHandler(m) {
         let comment = this.refs.comment;
@@ -17,6 +22,18 @@ export default class App extends Component {
         switch (m.domain) {
         case 'nagome_comment':
             if (m.command === "Got") {
+                console.log(m.content.user_thumbnail_url);
+                if (m.content.user_thumbnail_url!==undefined) {
+                    console.log(availableThumPer10s);
+                    if (availableThumPer10s <= 0) {
+                        m.content.user_thumbnail_url = "";
+                    } else {
+                        availableThumPer10s --;
+                        m.content.user_thumbnail_url.replace("usericon/", "usericon/s/");
+                    }
+                }
+                m.content.date = m.content.date.split(RegExp('[T.]'))[1];
+
                 comment.setState({
                     data: comment.state.data.concat([m.content])
                 });
