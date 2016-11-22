@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-//import ons from 'onsenui';
 import {Splitter, SplitterSide, SplitterContent, Page, Dialog, ProgressCircular,
     Toolbar, ToolbarButton, Icon} from 'react-onsenui';
-//import ons from 'onsenui';
+import ons from 'onsenui';
 
 import {ngm, NagomeInit} from './NagomeConn.js';
 
@@ -16,13 +15,41 @@ window.setInterval(()=>{
 }, 10 * 1000);
 
 export default class App extends Component {
+    constructor() {
+        super();
+        this.state = {
+            menuIsOpen: false,
+            wsIsConnecting: false,
+            broad: {
+                open: false,
+            },
+        };
+
+        NagomeInit(this.nagomeEventHandler.bind(this),
+                this.websocketEventHandler.bind(this));
+        ngm.connectWs();
+    }
+
     nagomeEventHandler(arrM) {
         let comment = this.refs.comment;
-        let vstate = comment.state;
+        let stApp = this.state;
+        let stComment = comment.state;
         for (let i = 0, len = arrM.length; i < len; i++) {
             let m = arrM[i];
 
             switch (m.domain) {
+            case 'nagome':
+                switch (m.command) {
+                case 'Broad.Open':
+                    stApp.broad.open = true;
+                    break;
+                case 'Broad.Close':
+                    stApp.broad.open = false;
+                    break;
+                default:
+                    console.log(m);
+                }
+                break;
             case 'nagome_comment':
                 if (m.command === "Got") {
                     console.log(m.content.user_thumbnail_url);
@@ -36,7 +63,7 @@ export default class App extends Component {
                         }
                     }
                     m.content.date = m.content.date.split(RegExp('[T.]'))[1];
-                    vstate.data.push(m.content);
+                    stComment.data.push(m.content);
                 } else {
                     console.log(m);
                 }
@@ -44,7 +71,22 @@ export default class App extends Component {
             case 'nagome_ui':
                 switch (m.command) {
                 case "ClearComments":
-                    vstate = { data: [] };
+                    stComment = { data: [] };
+                    break;
+                case "Dialog":
+                    switch (m.content.type) {
+                    case 'Info':
+                    case 'Warn':
+                        ons.notification.alert({
+                            title: m.content.type+" : "+m.content.title,
+                            message: m.content.description,
+                            cancelable: true,
+                        }).catch((e)=>{});
+
+                        break;
+                    default:
+                        console.log(m);
+                    }
                     break;
                 default:
                     console.log(m);
@@ -55,7 +97,8 @@ export default class App extends Component {
             }
         }
 
-        comment.setState(vstate);
+        this.setState(stApp);
+        comment.setState(stComment);
     }
 
     websocketEventHandler(e) {
@@ -64,28 +107,19 @@ export default class App extends Component {
         let t = this.state;
         switch (e) {
         case 'close':
-            t.isConnecting = true;
+            t.wsIsConnecting = true;
             window.setTimeout(ngm.connectWs.bind(ngm), 5000);
             break;
         case 'err':
-            t.isConnecting = true;
+            t.wsIsConnecting = true;
             break;
         case 'open':
-            t.isConnecting = false;
+            t.wsIsConnecting = false;
             break;
         default:
             console.log("Unknown ws event", e);
         }
         this.setState(t);
-    }
-
-    constructor() {
-        super();
-        this.state = {menuIsOpen: false, isConnecting: false};
-
-        NagomeInit(this.nagomeEventHandler.bind(this),
-                this.websocketEventHandler.bind(this));
-        ngm.connectWs();
     }
 
     setMenu(o) {
@@ -125,7 +159,7 @@ export default class App extends Component {
                     <Page
                         renderToolbar={this.renderToolbar.bind(this)}
                         renderBottomToolbar={()=> <BottomCommentBar /> }>
-                        <Dialog isOpen={this.state.isConnecting}
+                        <Dialog isOpen={this.state.wsIsConnecting}
                             isCancelable={false}>
                             <div style={{
                                 display: "flex",
@@ -135,7 +169,7 @@ export default class App extends Component {
                                 <p>Connecting...</p>
                             </div>
                         </Dialog>
-                        <Comment ref="comment" />
+                        <Comment broadState={this.state.broad} ref="comment" />
                     </Page>
                 </SplitterContent>
             </Splitter>

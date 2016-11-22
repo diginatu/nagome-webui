@@ -4,13 +4,11 @@ import {List, ListItem, ListHeader} from 'react-onsenui';
 
 export default class CommentList extends Component {
     static getThumbnail(row) {
-        let source;
         if (row.user_thumbnail_url!==undefined && row.user_thumbnail_url!=="") {
-            source = row.user_thumbnail_url;
+            return <img src={row.user_thumbnail_url} alt="user thumbnail" className='list__item__thumbnail' />;
         } else {
             return null;
         }
-        return <img src={source} alt="user thumbnail" className='list__item__thumbnail' />;
     }
 
     renderRow(row, i) {
