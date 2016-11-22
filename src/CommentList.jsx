@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 import {List, ListItem, ListHeader} from 'react-onsenui';
 
 export default class CommentList extends Component {
+    constructor() {
+        super();
+        this.isBottom = true;
+    }
     static getThumbnail(row) {
         if (row.user_thumbnail_url!==undefined && row.user_thumbnail_url!=="") {
             return <img src={row.user_thumbnail_url} alt="user thumbnail" className='list__item__thumbnail' />;
@@ -44,6 +48,20 @@ export default class CommentList extends Component {
                 </div>
             </ListItem>
             );
+    }
+
+    componentDidMount() {
+        this.page = document.getElementById('mainPage').querySelector('.page__content');
+    }
+
+    componentWillUpdate() {
+        this.isBottom = (this.page.scrollTop+this.page.offsetHeight === this.page.scrollHeight);
+    }
+
+    componentDidUpdate() {
+        if (this.isBottom) {
+            this.page.scrollTop = this.page.scrollHeight;
+        }
     }
 
     render() {

@@ -44,7 +44,7 @@ class WebSocketConn {
         };
 
         this.remainMes = "";
-        wsconn.onmessage = function (m) {
+        wsconn.onmessage = function(m) {
             let ms = m.data.split("\n");
             ms[0] = this.remainMes + ms[0];
             this.remainMes = ms.pop();

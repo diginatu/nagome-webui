@@ -34,7 +34,7 @@ export default class Comment extends Component {
                     wordBreak: "break-all",
                 }}>
                 <CommentList data={this.state.data} />
-                { this.props.broadState.open ? null : <DropArea /> }
+                { !this.props.broadState.open && this.state.data.length === 0 ? <DropArea /> : null }
             </div>
             );
     }

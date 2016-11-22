@@ -23,6 +23,7 @@ export default class App extends Component {
             broad: {
                 open: false,
             },
+            isBottom: true,
         };
 
         NagomeInit(this.nagomeEventHandler.bind(this),
@@ -31,6 +32,7 @@ export default class App extends Component {
     }
 
     nagomeEventHandler(arrM) {
+        console.log(arrM.length);
         let comment = this.refs.comment;
         let stApp = this.state;
         let stComment = comment.state;
@@ -157,6 +159,7 @@ export default class App extends Component {
                 </SplitterSide>
                 <SplitterContent>
                     <Page
+                        id="mainPage"
                         renderToolbar={this.renderToolbar.bind(this)}
                         renderBottomToolbar={()=> <BottomCommentBar /> }>
                         <Dialog isOpen={this.state.wsIsConnecting}
