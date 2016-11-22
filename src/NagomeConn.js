@@ -44,11 +44,16 @@ class WebSocketConn {
         };
 
         this.remainMes = "";
+        this.beforMes = [];
         wsconn.onmessage = function(m) {
             let ms = m.data.split("\n");
             ms[0] = this.remainMes + ms[0];
             this.remainMes = ms.pop();
-            messageHandler(ms);
+            this.beforMes = this.beforMes.concat(ms);
+            if (this.remainMes.length === 0) {
+                messageHandler(this.beforMes);
+                this.beforMes = [];
+            }
         }.bind(this);
 
         wsconn.onclose = () => {
