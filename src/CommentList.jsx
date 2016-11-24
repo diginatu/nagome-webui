@@ -52,15 +52,16 @@ export default class CommentList extends Component {
 
     componentDidMount() {
         this.page = document.getElementById('mainPage').querySelector('.page__content');
-    }
-
-    componentWillUpdate() {
-        this.isBottom = (this.page.scrollTop+this.page.offsetHeight === this.page.scrollHeight);
+        this.page.addEventListener("scroll", function() {
+            if (!this.isBottom || this.lastScrollHeight === this.page.scrollHeight) {
+                this.isBottom = (this.page.scrollTop+this.page.offsetHeight === this.page.scrollHeight);
+            }
+        }.bind(this));
     }
 
     componentDidUpdate() {
         if (this.isBottom) {
-            this.page.scrollTop = this.page.scrollHeight;
+            this.page.scrollTop = this.lastScrollHeight = this.page.scrollHeight;
         }
     }
 

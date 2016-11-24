@@ -23,7 +23,6 @@ export default class App extends Component {
             broad: {
                 open: false,
             },
-            isBottom: true,
         };
 
         NagomeInit(this.nagomeEventHandler.bind(this),
@@ -32,7 +31,6 @@ export default class App extends Component {
     }
 
     nagomeEventHandler(arrM) {
-        console.log(arrM.length);
         let comment = this.refs.comment;
         let stApp = this.state;
         let stComment = comment.state;
@@ -54,9 +52,7 @@ export default class App extends Component {
                 break;
             case 'nagome_comment':
                 if (m.command === "Got") {
-                    console.log(m.content.user_thumbnail_url);
                     if (m.content.user_thumbnail_url!==undefined) {
-                        console.log(availableThumPer10s);
                         if (availableThumPer10s <= 0) {
                             m.content.user_thumbnail_url = "";
                         } else {
@@ -172,7 +168,9 @@ export default class App extends Component {
                                 <p>Connecting...</p>
                             </div>
                         </Dialog>
-                        <Comment broadState={this.state.broad} ref="comment" />
+                        <Comment 
+                            broadState={this.state.broad}
+                            ref="comment" />
                     </Page>
                 </SplitterContent>
             </Splitter>
