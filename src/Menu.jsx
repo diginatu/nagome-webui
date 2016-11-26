@@ -45,7 +45,7 @@ export default class Menu extends Component {
                     renderRow={(m) => (
                         <ListItem key={m.text} onClick={this.handleMenuSelect.bind(this, m.fn)} tappable modifier="nodivider">
                             <div className="left">
-                                <Icon icon={m.icon} style={{marginRight: "7px"}} />
+                                <Icon icon={m.icon} />
                             </div>
                             <div className="center">
                                 {m.text}

@@ -24,15 +24,8 @@ export default class Comment extends Component {
 
     render() {
         return (
-            <div className="Comment"
-                onDrop={this.handleDrop.bind(this)}
-                style={{
-                    minHeight: "100%",
-                    display: "flex",
-                    flexDirection:"column",
-                    overflow: "auto",
-                    wordBreak: "break-all",
-                }}>
+            <div className="comment"
+                onDrop={this.handleDrop.bind(this)} >
                 <CommentList data={this.state.data} />
                 { !this.props.broadState.open && this.state.data.length === 0 ? <DropArea /> : null }
             </div>

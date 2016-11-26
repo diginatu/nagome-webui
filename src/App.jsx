@@ -1,18 +1,11 @@
 import React, {Component} from 'react';
-import {Splitter, SplitterSide, SplitterContent, Page, Dialog, ProgressCircular,
-    Toolbar, ToolbarButton, Icon} from 'react-onsenui';
+import {Splitter, SplitterSide, SplitterContent} from 'react-onsenui';
 import ons from 'onsenui';
 
 import {ngm, NagomeInit} from './NagomeConn.js';
 
-import Comment from './Comment.jsx';
 import Menu from './Menu.jsx';
-import BottomCommentBar from './BottomCommentBar.jsx';
-
-let availableThumPer10s = 5;
-window.setInterval(()=>{
-    availableThumPer10s = 5;
-}, 10 * 1000);
+import MainPage from './MainPage.jsx';
 
 export default class App extends Component {
     constructor() {
@@ -20,9 +13,8 @@ export default class App extends Component {
         this.state = {
             menuIsOpen: false,
             wsIsConnecting: false,
-            broad: {
-                open: false,
-            },
+            isBroadOpen: false,
+            broadInfo: {},
         };
 
         NagomeInit(this.nagomeEventHandler.bind(this),
@@ -31,9 +23,12 @@ export default class App extends Component {
     }
 
     nagomeEventHandler(arrM) {
-        let comment = this.refs.comment;
+        let comment = this.refs.mainpage.refs.comment;
         let stApp = this.state;
+        let chApp = false;
         let stComment = comment.state;
+        let chComment = false;
+
         for (let i = 0, len = arrM.length; i < len; i++) {
             let m = arrM[i];
 
@@ -41,10 +36,14 @@ export default class App extends Component {
             case 'nagome':
                 switch (m.command) {
                 case 'Broad.Open':
-                    stApp.broad.open = true;
+                    chApp = true;
+                    stApp.isBroadOpen = true;
+                    stApp.broadInfo = m.content;
                     break;
                 case 'Broad.Close':
-                    stApp.broad.open = false;
+                    chApp = true;
+                    stApp.isBroadOpen = false;
+                    stApp.broadInfo = {};
                     break;
                 default:
                     console.log(m);
@@ -52,14 +51,7 @@ export default class App extends Component {
                 break;
             case 'nagome_comment':
                 if (m.command === "Got") {
-                    if (m.content.user_thumbnail_url!==undefined) {
-                        if (availableThumPer10s <= 0) {
-                            m.content.user_thumbnail_url = "";
-                        } else {
-                            availableThumPer10s --;
-                            m.content.user_thumbnail_url.replace("usericon/", "usericon/s/");
-                        }
-                    }
+                    chComment = true;
                     m.content.date = m.content.date.split(RegExp('[T.]'))[1];
                     stComment.data.push(m.content);
                 } else {
@@ -69,6 +61,7 @@ export default class App extends Component {
             case 'nagome_ui':
                 switch (m.command) {
                 case "ClearComments":
+                    chComment = true;
                     stComment = { data: [] };
                     break;
                 case "Dialog":
@@ -95,8 +88,8 @@ export default class App extends Component {
             }
         }
 
-        this.setState(stApp);
-        comment.setState(stComment);
+        if (chComment) comment.setState(stComment);
+        if (chApp) this.setState(stApp);
     }
 
     websocketEventHandler(e) {
@@ -126,52 +119,31 @@ export default class App extends Component {
         this.setState(t);
     }
 
-    renderToolbar() {
-        return (
-            <Toolbar>
-                <div className='left'>
-                    <ToolbarButton onClick={this.setMenu.bind(this, true)}>
-                        <Icon icon='ion-navicon, material:md-menu' />
-                    </ToolbarButton>
-                </div>
-                <div className='center'>Nagome</div>
-            </Toolbar>
-            );
-    }
-
     render() {
+        if (this.state.broadInfo.title !== undefined) {
+            document.title = this.state.broadInfo.title+" / "+this.state.broadInfo.owner_name+" - Nagome";
+        } else {
+            document.title = "Nagome";
+        }
+
         return (
             <Splitter>
                 <SplitterSide
                     side='left'
                     width={200}
                     collapse={true}
-                    isSwipeable={true}
                     isOpen={this.state.menuIsOpen}
                     onClose={this.setMenu.bind(this, false)}
-                    onOpen={this.setMenu.bind(this, true)}
-                    >
+                    onOpen={this.setMenu.bind(this, true)} >
                     <Menu onSelect={this.setMenu.bind(this, false)} />
                 </SplitterSide>
                 <SplitterContent>
-                    <Page
-                        id="mainPage"
-                        renderToolbar={this.renderToolbar.bind(this)}
-                        renderBottomToolbar={()=> <BottomCommentBar /> }>
-                        <Dialog isOpen={this.state.wsIsConnecting}
-                            isCancelable={false}>
-                            <div style={{
-                                display: "flex",
-                                alignItems: "center"
-                            }}>
-                                <ProgressCircular style={{"margin": "20px"}} indeterminate />
-                                <p>Connecting...</p>
-                            </div>
-                        </Dialog>
-                        <Comment 
-                            broadState={this.state.broad}
-                            ref="comment" />
-                    </Page>
+                    <MainPage
+                        ref="mainpage"
+                        isBroadOpen={this.state.isBroadOpen}
+                        wsIsConnecting={this.state.wsIsConnecting}
+                        broadTitle={document.title}
+                        onMenuOpen={this.setMenu.bind(this, true)} />
                 </SplitterContent>
             </Splitter>
             );
