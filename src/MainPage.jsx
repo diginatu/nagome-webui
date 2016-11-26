@@ -35,7 +35,7 @@ export default class MainPage extends Component {
                     </div>
                 </Dialog>
                 <Comment 
-                    broadState={this.props.isBroadOpen}
+                    isBroadOpen={this.props.isBroadOpen}
                     ref="comment" />
             </Page>
             );

@@ -27,7 +27,7 @@ export default class Comment extends Component {
             <div className="comment"
                 onDrop={this.handleDrop.bind(this)} >
                 <CommentList data={this.state.data} />
-                { !this.props.broadState.open && this.state.data.length === 0 ? <DropArea /> : null }
+                { !this.props.isBroadOpen && this.state.data.length === 0 ? <DropArea /> : null }
             </div>
             );
     }
