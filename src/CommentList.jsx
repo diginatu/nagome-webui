@@ -20,7 +20,7 @@ export default class CommentList extends Component {
                     </div>
                 </div>
                 <div className='center'>
-                    <div>
+                    <div className='comment_text'>
                         {row.raw}
                     </div>
                 </div>
