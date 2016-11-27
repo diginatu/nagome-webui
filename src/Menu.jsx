@@ -3,6 +3,7 @@ import {Page, List, ListItem, Icon} from 'react-onsenui';
 import ons from 'onsenui';
 
 import {ngm} from './NagomeConn.js';
+import AccountSetting from './AccountSetting.jsx';
 
 export default class Menu extends Component {
     componentWillMount() {
@@ -28,6 +29,13 @@ export default class Menu extends Component {
                 icon: "fa-file-o",
                 fn: () => {
                     ngm.clearComments();
+                }},
+            {text: "Plugins",
+                icon: "fa-file-o",
+                fn: () => {
+                    this.props.navigator.pushPage({
+                        component: AccountSetting,
+                    });
                 }},
         ];
     }

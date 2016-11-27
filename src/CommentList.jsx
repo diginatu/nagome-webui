@@ -29,7 +29,7 @@ export default class CommentList extends Component {
     }
 
     componentDidMount() {
-        this.page = document.getElementById('mainPage').querySelector('.page__content');
+        this.page = document.getElementById('mainFrame').querySelector('.page__content');
         this.page.addEventListener("scroll", function() {
             if (!this.isBottom || this.lastScrollHeight === this.page.scrollHeight) {
                 this.isBottom = (this.page.scrollTop+this.page.offsetHeight === this.page.scrollHeight);
