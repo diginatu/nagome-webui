@@ -131,7 +131,15 @@ class Ngmconn {
                 "command": "ClearComments"
             }
         );
+    }
 
+    pluginList() {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_direct",
+                "command": "Plug.List"
+            }
+        );
     }
 }
 

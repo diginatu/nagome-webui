@@ -3,7 +3,8 @@ import {Page, List, ListItem, ListHeader, Icon} from 'react-onsenui';
 import ons from 'onsenui';
 
 import {ngm} from './NagomeConn.js';
-import AccountSetting from './AccountSetting.jsx';
+import SettingPlugin from './SettingPlugin.jsx';
+import SettingAccount from './SettingAccount.jsx';
 
 export default class Menu extends Component {
     componentWillMount() {
@@ -37,13 +38,21 @@ export default class Menu extends Component {
         {
             title: "settings",
             list: [
-                {text: "Plugins",
-                    icon: "fa-file-o",
-                    fn: () => {
-                        this.props.navigator.pushPage({
-                            component: AccountSetting,
-                        });
-                    }},
+                    {text: "Plugins",
+                        icon: "fa-file-o",
+                        fn: () => {
+                            ngm.pluginList();
+                            this.props.navigator.pushPage({
+                                component: SettingPlugin,
+                            });
+                        }},
+                    {text: "Account",
+                        icon: "fa-file-o",
+                        fn: () => {
+                            this.props.navigator.pushPage({
+                                component: SettingAccount,
+                            });
+                        }},
             ]
         }];
     }
@@ -63,7 +72,7 @@ export default class Menu extends Component {
                     {m.text}
                 </div>
             </ListItem>
-               );
+        );
     }
 
     renderLists(lists) {
@@ -77,7 +86,7 @@ export default class Menu extends Component {
                         <ListHeader>{list.title}</ListHeader>
                     }
                 />
-                );
+            );
         });
     }
 
@@ -86,6 +95,6 @@ export default class Menu extends Component {
             <Page>
                 {this.renderLists(this.menuLists)}
             </Page>
-            );
+        );
     }
 }

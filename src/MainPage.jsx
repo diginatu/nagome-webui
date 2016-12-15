@@ -83,6 +83,16 @@ export default class MainPage extends Component {
                     console.log(m);
                 }
                 break;
+            case 'nagome_direct':
+                switch (m.command) {
+                case "Plug.List":
+                    chComment = true;
+                    stComment = { data: [] };
+                    break;
+                default:
+                    console.log(m);
+                }
+                break;
             default:
                 console.log(m);
             }

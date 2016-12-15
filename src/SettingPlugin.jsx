@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Page, Toolbar, BackButton} from 'react-onsenui';
 
-export default class AccountSetting extends Component {
+export default class SettingPlugin extends Component {
     back() {
         this.props.navigator.popPage();
     }
@@ -14,9 +14,9 @@ export default class AccountSetting extends Component {
                         Back
                     </BackButton>
                 </div>
-                <div className='center'>{this.props.broadTitle}</div>
+                <div className='center'>Plugins</div>
             </Toolbar>
-            );
+        );
     }
 
     render() {
@@ -25,6 +25,6 @@ export default class AccountSetting extends Component {
                 renderToolbar={this.renderToolbar.bind(this)} >
                 kepekepe
             </Page>
-            );
+        );
     }
 }
