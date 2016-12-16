@@ -34,9 +34,7 @@ export default class MainFrame extends Component {
                         <p>Connecting...</p>
                     </div>
                 </Dialog>
-                <Comment
-                    isBroadOpen={this.props.isBroadOpen}
-                    ref="comment" />
+                <Comment isBroadOpen={this.props.isBroadOpen} />
             </Page>
             );
     }

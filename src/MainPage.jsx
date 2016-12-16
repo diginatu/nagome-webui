@@ -17,77 +17,28 @@ export default class MainPage extends Component {
             broadInfo: {},
         };
 
-        NagomeInit(this.nagomeEventHandler.bind(this),
-                this.websocketEventHandler.bind(this));
+        NagomeInit(this.websocketEventHandler.bind(this));
+        ngm.addNgmEvHandler("nagome_ui", this.UIEventHandler.bind(this));
+        ngm.addNgmEvHandler("nagome", this.nagomeEventHandler.bind(this));
         ngm.connectWs();
     }
 
-    nagomeEventHandler(arrM) {
-        let comment = this.refs.mainframe.refs.comment;
-        let stApp = this.state;
-        let chApp = false;
-        let stComment = comment.state;
-        let chComment = false;
-
+    UIEventHandler(arrM) {
         for (let i = 0, len = arrM.length; i < len; i++) {
             let m = arrM[i];
+            switch (m.command) {
+            case "ClearComments":
+                break;
+            case "Dialog":
+                switch (m.content.type) {
+                case 'Info':
+                case 'Warn':
+                    ons.notification.alert({
+                        title: m.content.type+" : "+m.content.title,
+                        message: m.content.description,
+                        cancelable: true,
+                    }).catch((e)=>{});
 
-            switch (m.domain) {
-            case 'nagome':
-                switch (m.command) {
-                case 'Broad.Open':
-                    chApp = true;
-                    stApp.isBroadOpen = true;
-                    stApp.broadInfo = m.content;
-                    break;
-                case 'Broad.Close':
-                    chApp = true;
-                    stApp.isBroadOpen = false;
-                    stApp.broadInfo = {};
-                    break;
-                default:
-                    console.log(m);
-                }
-                break;
-            case 'nagome_comment':
-                if (m.command === "Got") {
-                    chComment = true;
-                    m.content.date = m.content.date.split(RegExp('[T.]'))[1];
-                    stComment.data.push(m.content);
-                } else {
-                    console.log(m);
-                }
-                break;
-            case 'nagome_ui':
-                switch (m.command) {
-                case "ClearComments":
-                    chComment = true;
-                    stComment = { data: [] };
-                    break;
-                case "Dialog":
-                    switch (m.content.type) {
-                    case 'Info':
-                    case 'Warn':
-                        ons.notification.alert({
-                            title: m.content.type+" : "+m.content.title,
-                            message: m.content.description,
-                            cancelable: true,
-                        }).catch((e)=>{});
-
-                        break;
-                    default:
-                        console.log(m);
-                    }
-                    break;
-                default:
-                    console.log(m);
-                }
-                break;
-            case 'nagome_direct':
-                switch (m.command) {
-                case "Plug.List":
-                    chComment = true;
-                    stComment = { data: [] };
                     break;
                 default:
                     console.log(m);
@@ -97,9 +48,31 @@ export default class MainPage extends Component {
                 console.log(m);
             }
         }
+    }
 
-        if (chComment) comment.setState(stComment);
-        if (chApp) this.setState(stApp);
+    nagomeEventHandler(arrM) {
+        let st = this.state;
+        let chApp = false;
+
+        for (let i = 0, len = arrM.length; i < len; i++) {
+            let m = arrM[i];
+            switch (m.command) {
+            case 'Broad.Open':
+                chApp = true;
+                st.isBroadOpen = true;
+                st.broadInfo = m.content;
+                break;
+            case 'Broad.Close':
+                chApp = true;
+                st.isBroadOpen = false;
+                st.broadInfo = {};
+                break;
+            default:
+                console.log(m);
+            }
+        }
+
+        if (chApp) this.setState(st);
     }
 
     websocketEventHandler(e) {
@@ -152,7 +125,6 @@ export default class MainPage extends Component {
                     </SplitterSide>
                     <SplitterContent>
                         <MainFrame
-                            ref="mainframe"
                             isBroadOpen={this.state.isBroadOpen}
                             wsIsConnecting={this.state.wsIsConnecting}
                             broadTitle={document.title}

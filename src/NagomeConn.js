@@ -1,28 +1,28 @@
 import ons from 'onsenui';
 export var ngm;
 
-// function (object nagomeMessage)
-var messageHdlr;
-// function (string event)
-var wsEventHdlr;
-var wsconn;
 
 class WebSocketConn {
+    constructor(wsEventHdlr) {
+        this.wsEventHdlr = wsEventHdlr;
+    }
+
     send(jsonm) {
-        wsconn.send(jsonm);
+        this.wsconn.send(jsonm);
     }
 
     sendObj(obj) {
-        wsconn.send( JSON.stringify(obj) );
+        this.wsconn.send( JSON.stringify(obj) );
     }
 
     connect(messageHandler) {
         if (!("WebSocket" in window)) {
             ons.notification.alert("WebSocket is NOT supported by this browser");
+            return;
         }
 
         if (process.env.NODE_ENV === "development") {
-            wsconn = new WebSocket(`ws://localhost:8753/ws`);
+            this.wsconn = new WebSocket(`ws://localhost:8753/ws`);
         } else {
             // make absolute ws uri
             let loc = window.location, prot;
@@ -31,21 +31,21 @@ class WebSocketConn {
             } else {
                 prot = "ws:";
             }
-            wsconn = new WebSocket(`${prot}//${loc.host}/ws`);
+            this.wsconn = new WebSocket(`${prot}//${loc.host}/ws`);
         }
 
-        wsconn.onerror = (err) => {
+        this.wsconn.onerror = (err) => {
             console.log(err);
-            wsEventHdlr("err");
+            this.wsEventHdlr("err");
         };
 
-        wsconn.onopen = () => {
-            wsEventHdlr("open");
+        this.wsconn.onopen = () => {
+            this.wsEventHdlr("open");
         };
 
         this.remainMes = "";
         this.beforMes = [];
-        wsconn.onmessage = function(m) {
+        this.wsconn.onmessage = function(m) {
             let ms = m.data.split("\n");
             ms[0] = this.remainMes + ms[0];
             this.remainMes = ms.pop();
@@ -56,21 +56,21 @@ class WebSocketConn {
             }
         }.bind(this);
 
-        wsconn.onclose = () => {
-            wsEventHdlr("close");
+        this.wsconn.onclose = () => {
+            this.wsEventHdlr("close");
         };
     }
 }
 
 class Ngmconn {
-    constructor(nagomeEventHandler, websocketEventHandler) {
-        this.ws = new WebSocketConn();
-        messageHdlr = nagomeEventHandler;
-        wsEventHdlr = websocketEventHandler;
+    constructor(websocketEventHandlerFn) {
+        this.evHdlr = [];
+        this.domainList = [];
+        this.ws = new WebSocketConn(websocketEventHandlerFn);
     }
 
     handleMessage(jsonArrM) {
-        let arrM = [];
+        let arrMD = [];
         let m;
         for (let i = 0, len = jsonArrM.length; i < len; i++) {
             try {
@@ -78,14 +78,41 @@ class Ngmconn {
             } catch (e) {
                 console.log(e);
                 console.log(jsonArrM[i]);
+                continue;
             }
-            arrM.push(m);
+            let ind = this.domainList.indexOf(m.domain);
+            if (ind === -1) {
+                console.log(m);
+                continue;
+            }
+            if (arrMD[ind] === undefined) {
+                arrMD[ind] = [];
+            }
+            arrMD[ind].push(m);
         }
-        messageHdlr(arrM);
+        for (let i = 0, len = arrMD.length; i < len; i++) {
+            if (arrMD[i] !== undefined) {
+                for (let j = 0, lenf = this.evHdlr[i].length; j < lenf; j++) {
+                    this.evHdlr[i][j](arrMD[i]);
+                }
+            }
+        }
     }
 
     connectWs() {
-        this.ws.connect(this.handleMessage);
+        this.ws.connect(this.handleMessage.bind(this));
+    }
+
+    addNgmEvHandler(domain, fn) {
+        let ind = this.domainList.indexOf(domain);
+        if (ind === -1) {
+            ind = this.domainList.length;
+            this.domainList.push(domain);
+        }
+        if (this.evHdlr[ind] === undefined) {
+            this.evHdlr[ind] = [];
+        }
+        this.evHdlr[ind].push(fn);
     }
 
     broadConnect(uri) {
@@ -143,6 +170,7 @@ class Ngmconn {
     }
 }
 
+// NagomeInit (function (string event), function(object nagomeMessage))
 export var NagomeInit = (nagomeEventHandler, websocketEventHandler) => {
     ngm = new Ngmconn(nagomeEventHandler, websocketEventHandler);
 };
