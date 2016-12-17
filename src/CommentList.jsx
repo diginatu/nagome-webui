@@ -25,7 +25,7 @@ export default class CommentList extends Component {
                     </div>
                 </div>
             </ListItem>
-            );
+        );
     }
 
     componentDidMount() {
@@ -47,8 +47,10 @@ export default class CommentList extends Component {
 
     render() {
         return (
-            <List dataSource={this.props.data} renderRow={this.renderRow}
+            <List
+                dataSource={this.props.data}
+                renderRow={this.renderRow}
                 renderHeader={() => <ListHeader>Comments</ListHeader>} />
-            );
+    );
     }
 }

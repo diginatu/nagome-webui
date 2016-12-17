@@ -1,27 +1,12 @@
 import React, {Component} from 'react';
-import {Page, Toolbar, BackButton} from 'react-onsenui';
-import {ngm} from './NagomeConn.js';
+import {List, ListItem, Page, Toolbar, BackButton} from 'react-onsenui';
 
 export default class SettingPlugin extends Component {
     constructor() {
         super();
-
-        ngm.addNgmEvHandler("nagome_directngm", this.listHandler.bind(this));
-    }
-
-    listHandler(arrM) {
-        //let st = this.state;
-        for (let i = 0, len = arrM.length; i < len; i++) {
-            let m = arrM[i];
-            switch (m.command) {
-            case "Plug.List":
-                console.log(m.content.plugins);
-                break;
-            default:
-                console.log(m);
-            }
-        }
-        //this.setState(st);
+        this.state = {
+            plugs: [],
+        };
     }
 
     back() {
@@ -41,11 +26,37 @@ export default class SettingPlugin extends Component {
         );
     }
 
+    renderRow(row, i) {
+        return (
+            <ListItem key={i}>
+                <div className='left'>
+                    {i}
+                </div>
+                <div className='center'>
+                    <div className='list__item__title'>
+                        {row.name}
+                    </div>
+                    <div className='list__item__subtitle'>
+                        {row.description}
+                    </div>
+                </div>
+                <div className='right'>
+                    button
+                </div>
+            </ListItem>
+        );
+    }
+
+    updateList(list) {
+        this.setState({
+            plugs: list,
+        });
+    }
+
     render() {
         return (
-            <Page
-                renderToolbar={this.renderToolbar.bind(this)} >
-                kepekepe
+            <Page renderToolbar={this.renderToolbar.bind(this)}>
+                <List dataSource={this.state.plugs} renderRow={this.renderRow} />
             </Page>
         );
     }

@@ -7,6 +7,32 @@ import SettingPlugin from './SettingPlugin.jsx';
 import SettingAccount from './SettingAccount.jsx';
 
 export default class Menu extends Component {
+    constructor() {
+        super();
+
+        this.refSettingPlugin = null;
+
+        ngm.addNgmEvHandler("nagome_directngm", this.plugsListHandler.bind(this));
+    }
+
+    plugsListHandler(arrM) {
+        if (this.refSettingPlugin === null) {
+            return
+        }
+        let list;
+        for (let i = 0, len = arrM.length; i < len; i++) {
+            let m = arrM[i];
+            switch (m.command) {
+                case "Plug.List":
+                    list = m.content.plugins;
+                    break;
+                default:
+                    console.log(m);
+            }
+        }
+        this.refSettingPlugin.updateList(list)
+    }
+
     componentWillMount() {
         this.menuLists = [{
             title: "Comment",
@@ -44,15 +70,20 @@ export default class Menu extends Component {
                             ngm.pluginList();
                             this.props.navigator.pushPage({
                                 component: SettingPlugin,
+                                props: {
+                                    ref: (r) => {
+                                        this.refSettingPlugin = r;
+                                    }
+                                }
                             });
                         }},
-                    {text: "Account",
-                        icon: "fa-file-o",
-                        fn: () => {
-                            this.props.navigator.pushPage({
-                                component: SettingAccount,
-                            });
-                        }},
+                {text: "Account",
+                    icon: "fa-file-o",
+                    fn: () => {
+                        this.props.navigator.pushPage({
+                            component: SettingAccount,
+                        });
+                    }},
             ]
         }];
     }
@@ -83,10 +114,10 @@ export default class Menu extends Component {
                     dataSource={list.list}
                     renderRow={this.renderRow.bind(this)}
                     renderHeader={() => 
-                        <ListHeader>{list.title}</ListHeader>
-                    }
-                />
-            );
+                <ListHeader>{list.title}</ListHeader>
+            }
+        />
+    );
         });
     }
 

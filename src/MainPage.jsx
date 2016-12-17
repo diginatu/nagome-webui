@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Page, Splitter, SplitterSide, SplitterContent} from 'react-onsenui';
 import ons from 'onsenui';
 
-import {ngm, NagomeInit} from './NagomeConn.js';
+import {ngm} from './NagomeConn.js';
 
 import Menu from './Menu.jsx';
 import MainFrame from './MainFrame.jsx';
@@ -17,10 +17,14 @@ export default class MainPage extends Component {
             broadInfo: {},
         };
 
-        NagomeInit(this.websocketEventHandler.bind(this));
         ngm.addNgmEvHandler("nagome_ui", this.UIEventHandler.bind(this));
         ngm.addNgmEvHandler("nagome", this.nagomeEventHandler.bind(this));
-        ngm.connectWs();
+    }
+
+    setWsIsConnecting(f) {
+        let t = this.state;
+        t.wsIsConnecting = f;
+        this.setState(t);
     }
 
     UIEventHandler(arrM) {
@@ -73,27 +77,6 @@ export default class MainPage extends Component {
         }
 
         if (chApp) this.setState(st);
-    }
-
-    websocketEventHandler(e) {
-        console.log(e);
-
-        let t = this.state;
-        switch (e) {
-        case 'close':
-            t.wsIsConnecting = true;
-            window.setTimeout(ngm.connectWs.bind(ngm), 5000);
-            break;
-        case 'err':
-            t.wsIsConnecting = true;
-            break;
-        case 'open':
-            t.wsIsConnecting = false;
-            break;
-        default:
-            console.log("Unknown ws event", e);
-        }
-        this.setState(t);
     }
 
     setMenu(o) {
