@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {List, ListItem, Page, Toolbar, BackButton} from 'react-onsenui';
+import {ngm} from './NagomeConn.js';
+import {List, ListItem, Page, Toolbar, BackButton, Input} from 'react-onsenui';
 
 export default class SettingPlugin extends Component {
     constructor() {
@@ -26,11 +27,22 @@ export default class SettingPlugin extends Component {
         );
     }
 
+    handleEnable(no, e) {
+        let target = e.currentTarget || e.target;
+        ngm.pluginEnable(no, target.checked);
+    }
+
     renderRow(row, i) {
         return (
             <ListItem key={i}>
                 <div className='left'>
-                    {i}
+                    <Input
+                        type='checkbox'
+                        disabled={row.no === 0}
+                        checked={row.state === 1}
+                        inputId={`checkbox-${row}`}
+                        onChange={this.handleEnable.bind(this, row.no)}
+                    />
                 </div>
                 <div className='center'>
                     <div className='list__item__title'>
@@ -56,7 +68,7 @@ export default class SettingPlugin extends Component {
     render() {
         return (
             <Page renderToolbar={this.renderToolbar.bind(this)}>
-                <List dataSource={this.state.plugs} renderRow={this.renderRow} />
+                <List dataSource={this.state.plugs} renderRow={this.renderRow.bind(this)} />
             </Page>
         );
     }

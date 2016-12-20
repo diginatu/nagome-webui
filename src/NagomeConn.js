@@ -138,13 +138,13 @@ class Ngmconn {
         );
     }
 
-    sendComment(t, iyayo = false) {
+    sendComment(s, iyayo = false) {
         this.ws.sendObj(
             {
                 "domain": "nagome_query",
                 "command": "Broad.SendComment",
                 "content": {
-                    "text": t,
+                    "text": s,
                     "iyayo": iyayo
                 }
             }
@@ -165,6 +165,19 @@ class Ngmconn {
             {
                 "domain": "nagome_direct",
                 "command": "Plug.List"
+            }
+        );
+    }
+
+    pluginEnable(no, enable) {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_query",
+                "command": "Plug.Enable",
+                "content": {
+                    "no": no,
+                    "enable": enable,
+                }
             }
         );
     }
