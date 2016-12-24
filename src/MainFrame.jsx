@@ -24,11 +24,13 @@ export default class MainFrame extends Component {
                 id="mainFrame"
                 renderToolbar={this.renderToolbar.bind(this)}
                 renderBottomToolbar={()=> <BottomCommentBar /> }>
-                <Dialog isOpen={this.props.wsIsConnecting}
-                    isCancelable={false}>
+                <Dialog
+                    isOpen={this.props.wsIsConnecting}
+                    isCancelable={false} >
                     <div style={{
                         display: "flex",
-                        alignItems: "center"
+                        alignItems: "center",
+                        margin: "9px",
                     }}>
                         <ProgressCircular style={{"margin": "20px"}} indeterminate />
                         <p>Connecting...</p>
