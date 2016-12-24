@@ -191,7 +191,7 @@ class Ngmconn {
         );
     }
 
-    settingsList() {
+    settingsAll() {
         this.ws.sendObj(
             {
                 "domain": "nagome_direct",
@@ -199,6 +199,17 @@ class Ngmconn {
             }
         );
     }
+
+    settingsSetCurrent(settings) {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_query",
+                "command": "Settings.Set",
+                "content": settings,
+            }
+        );
+    }
+
 }
 
 // NagomeInit (function (string event), function(object nagomeMessage))

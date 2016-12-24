@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-//import {ngm} from './NagomeConn.js';
+import {ngm} from './NagomeConn.js';
 import {Page, Toolbar, BackButton, Input} from 'react-onsenui';
 
 export default class Settings extends Component {
@@ -15,8 +15,9 @@ export default class Settings extends Component {
         let st = this.state.settings;
         st.auto_follow_next_waku = ReactDOM.findDOMNode(this.refs.auto_follow_next_waku).checked;
         st.auto_save_to0_slot = ReactDOM.findDOMNode(this.refs.auto_save_to0_slot).checked;
-        st.auto_follow_next_waku = ReactDOM.findDOMNode(this.refs.auto_follow_next_waku).checked;
-        console.log(st);
+        st.user_name_get = ReactDOM.findDOMNode(this.refs.user_name_get).checked;
+        ngm.settingsSetCurrent(st);
+
         this.props.navigator.popPage();
     }
 
