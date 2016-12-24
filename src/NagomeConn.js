@@ -181,6 +181,24 @@ class Ngmconn {
             }
         );
     }
+
+    settingsCurrent() {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_direct",
+                "command": "Settings.Current"
+            }
+        );
+    }
+
+    settingsList() {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_direct",
+                "command": "Settings.All"
+            }
+        );
+    }
 }
 
 // NagomeInit (function (string event), function(object nagomeMessage))

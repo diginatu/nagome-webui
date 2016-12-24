@@ -5,32 +5,36 @@ import ons from 'onsenui';
 import {ngm} from './NagomeConn.js';
 import SettingPlugin from './SettingPlugin.jsx';
 import SettingAccount from './SettingAccount.jsx';
+import Settings from './Settings.jsx';
 
 export default class Menu extends Component {
     constructor() {
         super();
 
         this.refSettingPlugin = null;
+        this.refSettings = null;
 
-        ngm.addNgmEvHandler("nagome_directngm", this.plugsListHandler.bind(this));
+        ngm.addNgmEvHandler("nagome_directngm", this.settingsDirectHandler.bind(this));
     }
 
-    plugsListHandler(arrM) {
-        if (this.refSettingPlugin === null) {
-            return
-        }
-        let list;
+    settingsDirectHandler(arrM) {
         for (let i = 0, len = arrM.length; i < len; i++) {
             let m = arrM[i];
             switch (m.command) {
-                case "Plug.List":
-                    list = m.content.plugins;
-                    break;
-                default:
-                    console.log(m);
+            case "Plug.List":
+                if (this.refSettingPlugin === null) return;
+                this.refSettingPlugin.updateList(m.content.plugins);
+                break;
+
+            case "Settings.Current":
+                if (this.refSettings === null) return;
+                this.refSettings.update(m.content);
+                break;
+
+            default:
+                console.log(m);
             }
         }
-        this.refSettingPlugin.updateList(list)
     }
 
     componentWillMount() {
@@ -77,13 +81,26 @@ export default class Menu extends Component {
                                 }
                             });
                         }},
-                {text: "Account",
-                    icon: "fa-file-o",
-                    fn: () => {
-                        this.props.navigator.pushPage({
-                            component: SettingAccount,
-                        });
-                    }},
+                    {text: "Account",
+                        icon: "fa-file-o",
+                        fn: () => {
+                            this.props.navigator.pushPage({
+                                component: SettingAccount,
+                            });
+                        }},
+                    {text: "Settings",
+                        icon: "fa-file-o",
+                        fn: () => {
+                            ngm.settingsCurrent();
+                            this.props.navigator.pushPage({
+                                component: Settings,
+                                props: {
+                                    ref: (r) => {
+                                        this.refSettings = r;
+                                    }
+                                }
+                            });
+                        }},
             ]
         }];
     }
@@ -113,11 +130,11 @@ export default class Menu extends Component {
                     key={list.title}
                     dataSource={list.list}
                     renderRow={this.renderRow.bind(this)}
-                    renderHeader={() => 
-                <ListHeader>{list.title}</ListHeader>
-            }
-        />
-    );
+                    renderHeader={() =>
+                        <ListHeader>{list.title}</ListHeader>
+                    }
+                />
+            );
         });
     }
 

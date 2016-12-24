@@ -19,20 +19,20 @@ export default class App extends Component {
         console.log(e);
         let t;
         switch (e) {
-            case 'close':
-                t = true;
-                window.setTimeout(ngm.connectWs.bind(ngm), 5000);
-                break;
-            case 'err':
-                t = true;
-                break;
-            case 'open':
-                t = false;
-                break;
-            default:
-                console.log("Unknown ws event", e);
+        case 'close':
+            t = true;
+            window.setTimeout(ngm.connectWs.bind(ngm), 5000);
+            break;
+        case 'err':
+            t = true;
+            break;
+        case 'open':
+            t = false;
+            break;
+        default:
+            console.log("Unknown ws event", e);
         }
-        this.refMainPage.setWsIsConnecting(t)
+        this.refMainPage.setWsIsConnecting(t);
     }
 
     renderPage(route, navigator) {

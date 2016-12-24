@@ -19,3 +19,16 @@
 .comment .center .comment_text {
     user-select: text;
 }
+
+.form_p {
+    margin: 10px;
+}
+
+.form_p label {
+    display: flex;
+    align-items: center;
+}
+
+.form_p ons-input {
+    margin-right: 10px;
+}

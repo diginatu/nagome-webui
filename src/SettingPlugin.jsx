@@ -28,8 +28,7 @@ export default class SettingPlugin extends Component {
     }
 
     handleEnable(no, e) {
-        let target = e.currentTarget || e.target;
-        ngm.pluginEnable(no, target.checked);
+        ngm.pluginEnable(no, e.target.checked);
     }
 
     renderRow(row, i) {
@@ -53,7 +52,6 @@ export default class SettingPlugin extends Component {
                     </div>
                 </div>
                 <div className='right'>
-                    button
                 </div>
             </ListItem>
         );
