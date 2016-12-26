@@ -77,8 +77,9 @@ export default class Menu extends Component {
                                 props: {
                                     ref: (r) => {
                                         this.refSettingPlugin = r;
-                                    }
-                                }
+                                    },
+                                },
+                                key: "Plugins"
                             });
                         }},
                     {text: "Account",
@@ -86,6 +87,7 @@ export default class Menu extends Component {
                         fn: () => {
                             this.props.navigator.pushPage({
                                 component: SettingAccount,
+                                key: "Account"
                             });
                         }},
                     {text: "Settings",
@@ -97,8 +99,9 @@ export default class Menu extends Component {
                                 props: {
                                     ref: (r) => {
                                         this.refSettings = r;
-                                    }
-                                }
+                                    },
+                                },
+                                key: "Settings"
                             });
                         }},
             ]

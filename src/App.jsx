@@ -38,7 +38,12 @@ export default class App extends Component {
     renderPage(route, navigator) {
         let props = route.props || {};
         props.navigator = navigator;
-        props.key = route.key || route.component.name;
+        if (route.key !== undefined) {
+            props.key = route.key;
+        } else {
+            console.log("Navigator pushed without key.");
+            console.log(route);
+        }
         return React.createElement(route.component, props);
     }
 
@@ -53,7 +58,8 @@ export default class App extends Component {
                         ref: (r) => {
                             this.refMainPage = r;
                         }
-                    }
+                    },
+                    key: "MainPage"
                 }}
             />
         );
