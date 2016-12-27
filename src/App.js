@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Navigator} from 'react-onsenui';
 import {ngm, NagomeInit} from './NagomeConn.js';
-import MainPage from './MainPage.jsx';
+import MainPage from './MainPage.js';
 
 export default class App extends Component {
     constructor() {

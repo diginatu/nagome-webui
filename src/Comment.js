@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import {ngm} from './NagomeConn.js';
 
-import CommentList from './CommentList.jsx';
-import DropArea from './DropArea.jsx';
+import CommentList from './CommentList.js';
+import DropArea from './DropArea.js';
 
 export default class Comment extends Component {
     constructor() {

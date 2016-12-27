@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Page, Dialog, ProgressCircular, Toolbar, ToolbarButton, Icon} from 'react-onsenui';
 
-import Comment from './Comment.jsx';
-import BottomCommentBar from './BottomCommentBar.jsx';
+import Comment from './Comment.js';
+import BottomCommentBar from './BottomCommentBar.js';
 
 export default class MainFrame extends Component {
     renderToolbar() {

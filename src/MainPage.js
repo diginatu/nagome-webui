@@ -4,8 +4,8 @@ import ons from 'onsenui';
 
 import {ngm} from './NagomeConn.js';
 
-import Menu from './Menu.jsx';
-import MainFrame from './MainFrame.jsx';
+import Menu from './Menu.js';
+import MainFrame from './MainFrame.js';
 
 export default class MainPage extends Component {
     constructor() {

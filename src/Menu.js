@@ -3,9 +3,9 @@ import {Page, List, ListItem, ListHeader, Icon} from 'react-onsenui';
 import ons from 'onsenui';
 
 import {ngm} from './NagomeConn.js';
-import SettingPlugin from './SettingPlugin.jsx';
-import SettingAccount from './SettingAccount.jsx';
-import Settings from './Settings.jsx';
+import SettingPlugin from './SettingPlugin.js';
+import SettingAccount from './SettingAccount.js';
+import Settings from './Settings.js';
 
 export default class Menu extends Component {
     constructor() {
