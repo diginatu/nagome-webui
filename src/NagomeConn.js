@@ -210,6 +210,33 @@ class Ngmconn {
         );
     }
 
+    accountSet(account) {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_query",
+                "command": "Account.Set",
+                "content": account,
+            }
+        );
+    }
+
+    accountLogin() {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_query",
+                "command": "Account.Login",
+            }
+        );
+    }
+
+    accountSave() {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_query",
+                "command": "Account.Save",
+            }
+        );
+    }
 }
 
 // NagomeInit (function (string event), function(object nagomeMessage))

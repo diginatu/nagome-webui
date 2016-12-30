@@ -32,3 +32,11 @@
 .form_p ons-input {
     margin-right: 10px;
 }
+
+.account_form {
+    text-align: center;
+}
+
+.account_form ons-input {
+    width: 80%;
+}

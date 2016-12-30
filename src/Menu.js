@@ -83,14 +83,6 @@ export default class Menu extends Component {
                                 key: "Plugins"
                             });
                         }},
-                    {text: "Account",
-                        icon: "fa-file-o",
-                        fn: () => {
-                            this.props.navigator.pushPage({
-                                component: SettingAccount,
-                                key: "Account"
-                            });
-                        }},
                     {text: "Settings",
                         icon: "fa-file-o",
                         fn: () => {
@@ -106,7 +98,20 @@ export default class Menu extends Component {
                             });
                         }},
                 ]
-            }
+            },
+            {
+                title: "App Settings",
+                list: [
+                    {text: "Account",
+                        icon: "fa-file-o",
+                        fn: () => {
+                            this.props.navigator.pushPage({
+                                component: SettingAccount,
+                                key: "Account"
+                            });
+                        }},
+                ]
+            },
         ];
     }
 
