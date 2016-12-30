@@ -51,6 +51,6 @@ export default class CommentList extends Component {
                 dataSource={this.props.data}
                 renderRow={this.renderRow}
                 renderHeader={() => <ListHeader>Comments</ListHeader>} />
-    );
+        );
     }
 }

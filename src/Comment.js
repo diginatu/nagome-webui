@@ -63,7 +63,7 @@ export default class Comment extends Component {
                 <CommentList data={this.state.data} />
                 { !this.props.isBroadOpen && this.state.data.length === 0 ? <DropArea /> : null }
             </div>
-            );
+        );
     }
 }
 

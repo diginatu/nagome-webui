@@ -19,9 +19,10 @@ export default class App extends Component {
     render() {
         return (
             <BottomToolbar>
-                <div style={{display:    'flex',
-                             height:     '100%',
-                             alignItems: 'center'}}>
+                <div style={{
+                    display:    'flex',
+                    height:     '100%',
+                    alignItems: 'center'}}>
                     <Input
                         value={this.state.text} float
                         onChange={(event) => { this.setState({text: event.target.value});} }
@@ -38,11 +39,11 @@ export default class App extends Component {
                         placeholder='Input message'
                     />
                     <Button modifier='quiet' onClick={this.sendComment.bind(this)}>
-                    Send
+                        Send
                     </Button>
                 </div>
             </BottomToolbar>
-            );
+        );
     }
 }
 

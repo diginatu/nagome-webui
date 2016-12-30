@@ -38,36 +38,37 @@ export default class Menu extends Component {
     }
 
     componentWillMount() {
-        this.menuLists = [{
-            title: "Comment",
-            list: [
-                { text: "Connect to URI",
-                    icon: "fa-link",
-                    fn: () => {
-                        ons.notification.prompt({
-                            title: 'Connect',
-                            message: 'Input Live ID or URI',
-                            cancelable: true,
-                            callback: (br) => {
-                                ngm.broadConnect(br);
-                            },
-                        });
-                    }},
-                {text: "Disconnect",
-                    icon: "fa-minus-circle",
-                    fn: () => {
-                        ngm.broadDisconnect();
-                    }},
-                {text: "Clear comments",
-                    icon: "fa-file-o",
-                    fn: () => {
-                        ngm.clearComments();
-                    }},
-            ],
-        },
-        {
-            title: "settings",
-            list: [
+        this.menuLists = [
+            {
+                title: "Comment",
+                list: [
+                    {text: "Connect to URI",
+                        icon: "fa-link",
+                        fn: () => {
+                            ons.notification.prompt({
+                                title: 'Connect',
+                                message: 'Input Live ID or URI',
+                                cancelable: true,
+                                callback: (br) => {
+                                    ngm.broadConnect(br);
+                                },
+                            }).catch(()=>{});
+                        }},
+                    {text: "Disconnect",
+                        icon: "fa-minus-circle",
+                        fn: () => {
+                            ngm.broadDisconnect();
+                        }},
+                    {text: "Clear comments",
+                        icon: "fa-file-o",
+                        fn: () => {
+                            ngm.clearComments();
+                        }},
+                ],
+            },
+            {
+                title: "Settings",
+                list: [
                     {text: "Plugins",
                         icon: "fa-file-o",
                         fn: () => {
@@ -104,8 +105,9 @@ export default class Menu extends Component {
                                 key: "Settings"
                             });
                         }},
-            ]
-        }];
+                ]
+            }
+        ];
     }
 
     handleMenuSelect(f) {
@@ -117,13 +119,13 @@ export default class Menu extends Component {
         return (
             <ListItem key={m.text} onClick={this.handleMenuSelect.bind(this, m.fn)} tappable>
                 <div className="left">
-                    <Icon icon={m.icon} />
-                </div>
-                <div className="center">
-                    {m.text}
-                </div>
-            </ListItem>
-        );
+                        <Icon icon={m.icon} />
+                    </div>
+                    <div className="center">
+                        {m.text}
+                    </div>
+                </ListItem>
+            );
     }
 
     renderLists(lists) {

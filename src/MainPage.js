@@ -115,6 +115,6 @@ export default class MainPage extends Component {
                     </SplitterContent>
                 </Splitter>
             </Page>
-            );
+        );
     }
 }
