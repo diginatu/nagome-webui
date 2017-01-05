@@ -7,10 +7,6 @@ export default class App extends Component {
     constructor() {
         super();
 
-        this.state = {
-            wsIsConnecting: false,
-        };
-
         NagomeInit(this.websocketEventHandler.bind(this));
         ngm.connectWs();
     }
@@ -32,7 +28,7 @@ export default class App extends Component {
         default:
             console.log("Unknown ws event", e);
         }
-        this.refMainPage.setWsIsConnecting(t);
+        this.refMainPage.setIsWsConnecting(t);
     }
 
     renderPage(route, navigator) {
@@ -54,7 +50,6 @@ export default class App extends Component {
                 initialRoute={{
                     component: MainPage,
                     props: {
-                        wsIsConnecting: this.state.wsIsConnecting,
                         ref: (r) => {
                             this.refMainPage = r;
                         }

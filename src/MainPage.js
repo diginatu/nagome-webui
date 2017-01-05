@@ -11,8 +11,8 @@ export default class MainPage extends Component {
     constructor() {
         super();
         this.state = {
-            menuIsOpen: false,
-            wsIsConnecting: false,
+            isMenuOpen: false,
+            isWsConnecting: false,
             isBroadOpen: false,
             broadInfo: {},
         };
@@ -21,9 +21,9 @@ export default class MainPage extends Component {
         ngm.addNgmEvHandler("nagome", this.nagomeEventHandler.bind(this));
     }
 
-    setWsIsConnecting(f) {
+    setIsWsConnecting(f) {
         let t = this.state;
-        t.wsIsConnecting = f;
+        t.isWsConnecting = f;
         this.setState(t);
     }
 
@@ -81,7 +81,7 @@ export default class MainPage extends Component {
 
     setMenu(o) {
         let t = this.state;
-        t.menuIsOpen = o;
+        t.isMenuOpen = o;
         this.setState(t);
     }
 
@@ -97,9 +97,9 @@ export default class MainPage extends Component {
                 <Splitter>
                     <SplitterSide
                         side='left'
-                        width={200}
-                        collapse={true}
-                        isOpen={this.state.menuIsOpen}
+                        width='250px'
+                        collapse='portrait'
+                        isOpen={this.state.isMenuOpen}
                         onClose={this.setMenu.bind(this, false)}
                         onOpen={this.setMenu.bind(this, true)} >
                         <Menu
@@ -109,8 +109,9 @@ export default class MainPage extends Component {
                     <SplitterContent>
                         <MainFrame
                             isBroadOpen={this.state.isBroadOpen}
-                            wsIsConnecting={this.state.wsIsConnecting}
+                            isWsConnecting={this.state.isWsConnecting}
                             broadTitle={document.title}
+                            isMenuOpen={this.state.isMenuOpen}
                             onMenuOpen={this.setMenu.bind(this, true)} />
                     </SplitterContent>
                 </Splitter>
