@@ -60,7 +60,7 @@ export default class Menu extends Component {
                             ngm.broadDisconnect();
                         }},
                     {text: "Clear comments",
-                        icon: "fa-file-o",
+                        icon: "fa-trash",
                         fn: () => {
                             ngm.clearComments();
                         }},
@@ -70,7 +70,7 @@ export default class Menu extends Component {
                 title: "Settings",
                 list: [
                     {text: "Plugins",
-                        icon: "fa-file-o",
+                        icon: "fa-plug",
                         fn: () => {
                             ngm.pluginList();
                             this.props.navigator.pushPage({
@@ -84,7 +84,7 @@ export default class Menu extends Component {
                             });
                         }},
                     {text: "Settings",
-                        icon: "fa-file-o",
+                        icon: "fa-gear",
                         fn: () => {
                             ngm.settingsCurrent();
                             this.props.navigator.pushPage({
@@ -103,7 +103,7 @@ export default class Menu extends Component {
                 title: "App Settings",
                 list: [
                     {text: "Account",
-                        icon: "fa-file-o",
+                        icon: "fa-user",
                         fn: () => {
                             this.props.navigator.pushPage({
                                 component: SettingAccount,
