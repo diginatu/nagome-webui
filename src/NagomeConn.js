@@ -204,8 +204,18 @@ class Ngmconn {
         this.ws.sendObj(
             {
                 "domain": "nagome_query",
-                "command": "Settings.Set",
+                "command": "Settings.SetCurrent",
                 "content": settings,
+            }
+        );
+    }
+
+    settingsSetAll(settingsSlots) {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_query",
+                "command": "Settings.SetAll",
+                "content": settingsSlots,
             }
         );
     }

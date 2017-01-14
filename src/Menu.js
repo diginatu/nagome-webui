@@ -5,6 +5,7 @@ import ons from 'onsenui';
 import {ngm} from './NagomeConn.js';
 import SettingPlugin from './SettingPlugin.js';
 import SettingAccount from './SettingAccount.js';
+import SettingSlots from './SettingSlots.js';
 import Settings from './Settings.js';
 
 export default class Menu extends Component {
@@ -12,6 +13,7 @@ export default class Menu extends Component {
         super();
 
         this.refSettingPlugin = null;
+        this.refSettingSlots = null;
         this.refSettings = null;
 
         ngm.addNgmEvHandler("nagome_directngm", this.settingsDirectHandler.bind(this));
@@ -27,8 +29,15 @@ export default class Menu extends Component {
                 break;
 
             case "Settings.Current":
-                if (this.refSettings === null) return;
-                this.refSettings.update(m.content);
+                if (this.refSettings !== null)
+                    this.refSettings.update(m.content);
+                if (this.refSettingSlots !== null)
+                    this.refSettingSlots.updateCurrent(m.content);
+                break;
+
+            case "Settings.All":
+                if (this.refSettingSlots === null) return;
+                this.refSettingSlots.update(m.content.config);
                 break;
 
             default:
@@ -108,6 +117,20 @@ export default class Menu extends Component {
                             this.props.navigator.pushPage({
                                 component: SettingAccount,
                                 key: "Account"
+                            });
+                        }},
+                    {text: "Setting slots",
+                        icon: "fa-file-o",
+                        fn: () => {
+                            ngm.settingsAll();
+                            this.props.navigator.pushPage({
+                                component: SettingSlots,
+                                props: {
+                                    ref: (r) => {
+                                        this.refSettingSlots = r;
+                                    },
+                                },
+                                key: "Slots"
                             });
                         }},
                 ]

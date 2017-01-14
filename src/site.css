@@ -40,3 +40,7 @@
 .account_form ons-input {
     width: 80%;
 }
+
+.button--danger, .button--danger:active {
+    background-color: rgb(251, 70, 62);
+}
