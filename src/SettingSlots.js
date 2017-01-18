@@ -9,6 +9,7 @@ export default class SettingSlots extends Component {
         this.state = {
             slots: [],
             editi: -1,
+            selecti: -1,
         };
         this.clickedNew = false;
         this.changed = false;
@@ -78,12 +79,19 @@ export default class SettingSlots extends Component {
 
     handleApply(i) {
         ngm.settingsSetCurrent(this.state.slots[i]);
+        this.back();
     }
 
     handleDelete(i) {
         this.changed = true;
         let st = this.state;
         st.slots.splice(i, 1);
+        this.setState(st);
+    }
+
+    handleItemSelect(i) {
+        let st = this.state;
+        st.selecti = i;
         this.setState(st);
     }
 
@@ -104,49 +112,55 @@ export default class SettingSlots extends Component {
     }
 
     renderRow(row, i) {
+        const selected = this.state.selecti === i;
         return (
-            <ListItem key={i}>
+            <ListItem
+                key={i}
+                onClick={this.handleItemSelect.bind(this, i)}
+                className={(selected?"selected ":"") + "slot_list_item"}
+                tappable
+            >
                 <div className='left'>
                 </div>
                 {(() => {
                     if (this.state.editi === i) {
                         return (
                             <div className='center'>
-                                <div className='list__item__title'>
-                                    <Input
-                                        value={row.settings_name}
-                                        onBlur={this.handleNameEnd.bind(this,i)}
-                                        onKeyDown={this.handleNameKey.bind(this,i)} >
-                                    </Input>
-                                </div>
+                                <Input
+                                    value={row.settings_name}
+                                    onBlur={this.handleNameEnd.bind(this,i)}
+                                    onKeyDown={this.handleNameKey.bind(this,i)} >
+                                </Input>
                             </div>
                         );
                     } else {
                         return(
                             <div className='center'>
-                                <div className='list__item__title'>
-                                    <span onDoubleClick={this.handleNameEdit.bind(this,i)}>
-                                        {row.settings_name}
-                                    </span>
+                                <span onDoubleClick={this.handleNameEdit.bind(this,i)}>
+                                    {row.settings_name}
+                                </span>
+                                { selected ?
                                     <Button
                                         onClick={this.handleNameEdit.bind(this,i)}
                                         modifier='quiet'>
                                         Edit
                                     </Button>
-                                </div>
+                                : null }
                             </div>
                         );
                     }
                 })()}
                 <div className='right'>
-                    <Button
-                        onClick={this.handleDelete.bind(this, i)}
-                        style={{
-                            marginRight: "10px"
-                        }}
-                        modifier='danger'>
-                        Delete
-                    </Button>
+                    { selected ?
+                        <Button
+                            onClick={this.handleDelete.bind(this, i)}
+                            style={{
+                                marginRight: "10px"
+                            }}
+                            modifier='danger'>
+                            Delete
+                        </Button>
+                    : null }
                     <Button
                         onClick={this.handleApply.bind(this, i)}
                         modifier='outline'>
@@ -159,16 +173,20 @@ export default class SettingSlots extends Component {
 
     render() {
         return (
-            <Page renderToolbar={this.renderToolbar.bind(this)}>
-                <List dataSource={this.state.slots} renderRow={this.renderRow.bind(this)} />
-                <Fab
-                    style={{
-                        backgroundColor: ons.platform.isAndroid()?null:'#4282cc'
-                    }}
-                    onClick={this.handleClickNew.bind(this)}
-                    position='bottom right'>
-                    <Icon icon='md-plus' />
-                </Fab>
+            <Page renderToolbar={this.renderToolbar.bind(this)} >
+                <div className="fill_parent" >
+                    <List dataSource={this.state.slots} renderRow={this.renderRow.bind(this)} />
+                    <Fab
+                        style={{
+                            backgroundColor: ons.platform.isAndroid()?null:'#4282cc'
+                        }}
+                        onClick={this.handleClickNew.bind(this)}
+                        position='bottom right'>
+                        <Icon icon='md-plus' />
+                    </Fab>
+                    <div className="fill" onClick={this.handleItemSelect.bind(this, -1)}>
+                    </div>
+                </div>
             </Page>
         );
     }

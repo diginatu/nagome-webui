@@ -34,24 +34,17 @@ export default class DropArea extends Component {
         }
         return (
             <div
+                className="drop_area fill"
                 style={{
                     border: `dashed ${this.state.dropping?6:4}px #BBB`,
-                    flex: "1 0 10px",
-                    borderRadius: "30px",
-                    margin: "10px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
                     backgroundColor: this.state.dropping?"rgb(236, 236, 236)":"rgb(255, 255, 255)",
-                    color: "rgb(90, 90, 90)",
                 }}
                 onDrop={this.stopMovePage}
                 onDragOver={this.handleDropOver.bind(this)}
                 onDragLeave={this.handleDropLeave.bind(this)} >
                 <Icon size={50} icon="ion-link" />
                 <Icon size={20} icon="ion-chevron-down" />
-                <p style={{fontSize: "20px"}}>Drop link here</p>
+                <p>Drop link here</p>
             </div>
         );
     }

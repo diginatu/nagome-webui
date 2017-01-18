@@ -1,7 +1,28 @@
-.comment {
+.fill_parent {
     min-height: 100%;
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
+}
+
+.fill {
+    flex: 1 0 10px;
+}
+
+.drop_area {
+    border-radius: 30px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: rgb(90, 90, 90);
+}
+
+.drop_area p {
+    font-size: 20px,
+}
+
+.comment {
     overflow: auto;
     word-break: break-all;
 }
@@ -39,6 +60,10 @@
 
 .account_form ons-input {
     width: 80%;
+}
+
+.slot_list_item.selected {
+    background-color: rgb(225, 235, 245);
 }
 
 .button--danger, .button--danger:active {
