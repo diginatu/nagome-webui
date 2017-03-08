@@ -139,6 +139,9 @@ class Ngmconn {
     }
 
     sendComment(s, iyayo = false) {
+        if (s === "") {
+            return;
+        }
         this.ws.sendObj(
             {
                 "domain": "nagome_query",
