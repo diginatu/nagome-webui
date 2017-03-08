@@ -1,3 +1,7 @@
+body {
+    overflow:hidden;
+}
+
 .fill_parent {
     min-height: 100%;
     display: flex;
@@ -6,6 +10,23 @@
 
 .fill {
     flex: 1 0 10px;
+}
+
+.broad_info_pop section {
+    margin: 18px;
+}
+.broad_info_pop h3 {
+    font-size: 18px;
+}
+.broad_info_pop h3 a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+.broad_info_pop h3 a:hover {
+    text-decoration: underline;
+}
+.broad_info_pop p {
+    margin: 5px 0px;
 }
 
 .drop_area {

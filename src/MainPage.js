@@ -14,7 +14,7 @@ export default class MainPage extends Component {
             isMenuOpen: false,
             isWsConnecting: false,
             isBroadOpen: false,
-            broadInfo: {},
+            broadInfo: null,
         };
 
         ngm.addNgmEvHandler("nagome_ui", this.UIEventHandler.bind(this));
@@ -69,7 +69,7 @@ export default class MainPage extends Component {
             case 'Broad.Close':
                 chApp = true;
                 st.isBroadOpen = false;
-                st.broadInfo = {};
+                st.broadInfo = null;
                 break;
             default:
                 console.log(m);
@@ -86,10 +86,10 @@ export default class MainPage extends Component {
     }
 
     render() {
-        if (this.state.broadInfo.title !== undefined) {
-            document.title = this.state.broadInfo.title+" / "+this.state.broadInfo.owner_name+" - Nagome";
-        } else {
+        if (this.state.broadInfo === null) {
             document.title = "Nagome";
+        } else {
+            document.title = this.state.broadInfo.title+" / "+this.state.broadInfo.owner_name+" - Nagome";
         }
 
         return (
@@ -110,7 +110,7 @@ export default class MainPage extends Component {
                         <MainFrame
                             isBroadOpen={this.state.isBroadOpen}
                             isWsConnecting={this.state.isWsConnecting}
-                            broadTitle={document.title}
+                            broadInfo={this.state.broadInfo}
                             isMenuOpen={this.state.isMenuOpen}
                             onMenuOpen={this.setMenu.bind(this, true)} />
                     </SplitterContent>
