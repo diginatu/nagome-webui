@@ -1,12 +1,110 @@
 import React, { Component } from 'react';
-//import ons from 'onsenui';
-import {List, ListItem, ListHeader} from 'react-onsenui';
+import {Popover, List, ListItem, ListHeader, Button} from 'react-onsenui';
+import ons from 'onsenui';
 
 export default class CommentList extends Component {
     constructor() {
         super();
         this.isBottom = true;
         this.userArtSeed = 0;
+        this.state = {
+            commentInfoPopN: -1,
+        };
+    }
+
+    editUserName(id) {
+        this.openCommentInfoPop(-1);
+        ons.notification.prompt({
+            title: 'Edit User Name',
+            message: 'Input new user name',
+            cancelable: true,
+            callback: (nm) => {
+                console.log(nm);
+            },
+        }).catch(()=>{});
+    }
+
+    fetchUserName(id) {
+    }
+
+    deleteUserName(id) {
+    }
+
+    openCommentInfoPop(n) {
+        let st = this.state;
+        st.commentInfoPopN = n;
+        this.setState(st);
+    }
+
+    commentInfoTarget() {
+        return document.getElementById('comment_info_pop_target') || document.getElementById('main_frame_toolbar_center');
+    }
+
+    renderCommentInfoPopover() {
+        if (this.state.commentInfoPopN === -1 ||
+            this.state.commentInfoPopN > this.props.data.length) {
+            return (
+                <div className='content'>
+                    No comment is selected
+                </div>
+            );
+        }
+        const data = this.props.data[this.state.commentInfoPopN];
+        return (
+            <div>
+                <div className='content'>
+                    <div className='right'>
+                        { data.user_thumbnail_url === undefined ?
+                                this.renderUserArt(data.user_id) :
+                                <img
+                                    src={data.user_thumbnail_url}
+                                    alt="user icon"
+                                >
+                                </img> }
+                    </div>
+                    <div className='head'>
+                        {data.user_name || "???"}
+                    </div>
+                    <div className='sub'>
+                        { (data.is_anonymity || data.is_broadcaster) ?
+                                data.user_id :
+                                <a href={'http://www.nicovideo.jp/user/'+data.user_id}>
+                                    {data.user_id}
+                                </a> }
+                    </div>
+                    <Button
+                        modifier='outline'
+                        onClick={this.editUserName.bind(this, data.user_id)}
+                    >
+                        Edit
+                    </Button>
+                    <Button
+                        modifier='outline'
+                        disabled={data.is_anonymity || data.is_broadcaster}
+                        onClick={this.fetchUserName.bind(this, data.user_id)}
+                    >
+                        Fetch
+                    </Button>
+                    <Button
+                        modifier='danger outline'
+                        onClick={this.deleteUserName.bind(this, data.user_id)}
+                    >
+                        Delete
+                    </Button>
+                </div>
+                <div className='extra content'>
+                    <div className='right sub'>
+                        {data.date}
+                    </div>
+                    <div className='sub'>
+                        No. {data.no}
+                    </div>
+                    <div className='body'>
+                        {data.comment}
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     djb2_hash(str) {
@@ -33,24 +131,22 @@ export default class CommentList extends Component {
         return colnm;
     }
 
-    renderUserArt(comment) {
-        if (comment.user_name === "") {
-            this.djb2_hash(comment.user_id);
-            return (
-                <table className='user_art'>
-                    <tbody>
-                        <tr>
-                            <td style={{backgroundColor: this.random_color()}}></td>
-                            <td style={{backgroundColor: this.random_color()}}></td>
-                        </tr>
-                        <tr>
-                            <td style={{backgroundColor: this.random_color()}}></td>
-                            <td style={{backgroundColor: this.random_color()}}></td>
-                        </tr>
-                    </tbody>
-                </table>
-            );
-        }
+    renderUserArt(hash) {
+        this.djb2_hash(hash);
+        return (
+            <table className='user_art'>
+                <tbody>
+                    <tr>
+                        <td style={{backgroundColor: this.random_color()}}></td>
+                        <td style={{backgroundColor: this.random_color()}}></td>
+                    </tr>
+                    <tr>
+                        <td style={{backgroundColor: this.random_color()}}></td>
+                        <td style={{backgroundColor: this.random_color()}}></td>
+                    </tr>
+                </tbody>
+            </table>
+        );
     }
 
     renderRow(row, i) {
@@ -58,10 +154,10 @@ export default class CommentList extends Component {
             <ListItem key={i}>
                 <div
                     className='left'
-                    onClick={this.props.onCommentInfoPop.bind(this, i)}
-                    id={i === this.props.commentInfoPopN ? "comment_info_pop_target" : ""}
+                    onClick={this.openCommentInfoPop.bind(this, i)}
+                    id={i === this.state.commentInfoPopN ? "comment_info_pop_target" : ""}
                 >
-                    {this.renderUserArt(row)}
+                    {row.user_name === "" ? this.renderUserArt(row.user_id) : ""}
                     <div className="user_name">
                         {row.user_name}
                     </div>
@@ -94,10 +190,22 @@ export default class CommentList extends Component {
 
     render() {
         return (
-            <List
-                dataSource={this.props.data}
-                renderRow={this.renderRow.bind(this)}
-                renderHeader={() => <ListHeader>Comments</ListHeader>} />
+            <div>
+                <List
+                    dataSource={this.props.data}
+                    renderRow={this.renderRow.bind(this)}
+                    renderHeader={() => <ListHeader>Comments</ListHeader>} />
+
+                <Popover
+                    className='comment_info_pop'
+                    isOpen={this.state.commentInfoPopN !== -1}
+                    onHide={this.openCommentInfoPop.bind(this, -1)}
+                    onCancel={this.openCommentInfoPop.bind(this, -1)}
+                    getTarget={this.commentInfoTarget.bind(this)}
+                >
+                    {this.renderCommentInfoPopover()}
+                </Popover>
+            </div>
         );
     }
 }

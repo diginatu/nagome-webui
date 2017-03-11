@@ -19,18 +19,13 @@ body {
     padding: 15px;
     word-wrap: break-word;
 }
-.popover__content .head,
 .popover__content a,
-.popover__content .sub,
-.popover__content .body {
+.popover__content div {
     user-select: text;
 }
 .popover__content .content > .head {
     font-weight: 700;
     font-size: 18px;
-}
-.popover__content .content a {
-    color: rgb(0, 0, 0);
 }
 .popover__content .content > .head a {
     text-decoration: none;
@@ -49,8 +44,12 @@ body {
     display: inline-block;
     vertical-align: middle;
 }
-.comment_info_pop {
-
+.popover__content .content a {
+    color: rgb(0, 0, 0);
+}
+.popover__content .content .button {
+    margin: 3px;
+    font-size: 14px;
 }
 
 .drop_area {
@@ -91,6 +90,24 @@ body {
     user-select: text;
 }
 
+.slot_list_item.selected {
+    background-color: rgb(225, 235, 245);
+}
+
+.button--danger, .button--danger:active {
+    background-color: rgb(251, 70, 62);
+}
+.button--outline.button--danger {
+    background-color: transparent;
+    border-color: rgba(251, 70, 62, 0.81);
+    color: rgba(251, 70, 62, 0.81);
+}
+.button--outline.button--danger:active {
+    background-color: rgba(251, 70, 62, 0.2);
+    border-color: rgba(251, 70, 62, 0.81);
+    color: rgba(251, 70, 62, 0.81);
+}
+
 .form_p {
     margin: 10px;
 }
@@ -109,10 +126,17 @@ body {
     width: 80%;
 }
 
-.slot_list_item.selected {
-    background-color: rgb(225, 235, 245);
+.right {
+    float: right;
 }
-
-.button--danger, .button--danger:active {
-    background-color: rgb(251, 70, 62);
+.left {
+    float: left;
+}
+.content:after {
+    display: block;
+    content: ' ';
+    height: 0;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden;
 }
