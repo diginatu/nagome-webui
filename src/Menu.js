@@ -49,7 +49,7 @@ export default class Menu extends Component {
     componentWillMount() {
         this.menuLists = [
             {
-                title: "Comment",
+                title: "Broadcast",
                 list: [
                     {text: "Connect to URI",
                         icon: "fa-link",
@@ -67,7 +67,18 @@ export default class Menu extends Component {
                         icon: "fa-minus-circle",
                         fn: () => {
                             ngm.broadDisconnect();
+                            this.props.onCloseBroadTab();
                         }},
+                    {text: "Open tab (browser only)",
+                        icon: "fa-play-circle-o",
+                        fn: () => {
+                            this.props.onOpenBroadTab();
+                        }},
+                ],
+            },
+            {
+                title: "Comment",
+                list: [
                     {text: "Clear comments",
                         icon: "fa-trash",
                         fn: () => {
@@ -120,7 +131,7 @@ export default class Menu extends Component {
                             });
                         }},
                     {text: "Setting slots",
-                        icon: "fa-file-o",
+                        icon: "fa-th-list",
                         fn: () => {
                             ngm.settingsAll();
                             this.props.navigator.pushPage({
@@ -153,7 +164,7 @@ export default class Menu extends Component {
                         {m.text}
                     </div>
                 </ListItem>
-            );
+        );
     }
 
     renderLists(lists) {

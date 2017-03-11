@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Popover, List, ListItem, ListHeader, Button} from 'react-onsenui';
 import ons from 'onsenui';
+import Utils from './Utils';
 
 export default class CommentList extends Component {
     constructor() {
@@ -68,7 +69,7 @@ export default class CommentList extends Component {
                     <div className='sub'>
                         { (data.is_anonymity || data.is_broadcaster) ?
                                 data.user_id :
-                                <a href={'http://www.nicovideo.jp/user/'+data.user_id}>
+                                <a href={Utils.userURL(data.user_id)}>
                                     {data.user_id}
                                 </a> }
                     </div>

@@ -3,7 +3,7 @@ import {Page, Splitter, SplitterSide, SplitterContent} from 'react-onsenui';
 import ons from 'onsenui';
 
 import {ngm} from './NagomeConn.js';
-
+import Utils from './Utils.js';
 import Menu from './Menu.js';
 import MainFrame from './MainFrame.js';
 
@@ -16,6 +16,7 @@ export default class MainPage extends Component {
             isBroadOpen: false,
             broadInfo: null,
         };
+        this.browserTab = null;
 
         ngm.addNgmEvHandler("nagome_ui", this.UIEventHandler.bind(this));
         ngm.addNgmEvHandler("nagome", this.nagomeEventHandler.bind(this));
@@ -25,6 +26,20 @@ export default class MainPage extends Component {
         let t = this.state;
         t.isWsConnecting = f;
         this.setState(t);
+    }
+
+    openBroadTab() {
+        if (this.state.broadInfo === null) {
+            return;
+        }
+        this.browserTab = window.open(Utils.broadcastURL(this.state.broadInfo.broad_id), '_blank');
+    }
+
+    closeBroadTab() {
+        if (this.browserTab === null || this.browserTab.closed) {
+            return;
+        }
+        this.browserTab.close();
     }
 
     UIEventHandler(arrM) {
@@ -65,6 +80,9 @@ export default class MainPage extends Component {
                 chApp = true;
                 st.isBroadOpen = true;
                 st.broadInfo = m.content;
+                if (this.browserTab !== null && !this.browserTab.closed) {
+                    this.browserTab.location.assign(Utils.broadcastURL(st.broadInfo.broad_id));
+                }
                 break;
             case 'Broad.Close':
                 chApp = true;
@@ -104,7 +122,10 @@ export default class MainPage extends Component {
                         onOpen={this.setMenu.bind(this, true)} >
                         <Menu
                             navigator={this.props.navigator}
-                            onSelect={this.setMenu.bind(this, false)} />
+                            onSelect={this.setMenu.bind(this, false)}
+                            onOpenBroadTab={this.openBroadTab.bind(this)}
+                            onCloseBroadTab={this.closeBroadTab.bind(this)}
+                        />
                     </SplitterSide>
                     <SplitterContent>
                         <MainFrame

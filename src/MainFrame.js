@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Popover, Page, Dialog, ProgressCircular, Toolbar, ToolbarButton, Icon} from 'react-onsenui';
 import ons from 'onsenui';
 
+import Utils from './Utils.js';
 import Comment from './Comment.js';
 import BottomCommentBar from './BottomCommentBar.js';
 
@@ -68,12 +69,12 @@ export default class MainFrame extends Component {
             return (
                 <div className='content'>
                     <div className='head'>
-                        <a href={"http://live.nicovideo.jp/watch/" + bi.broad_id}>{bi.title}</a>
+                        <a href={Utils.broadcastURL(bi.broad_id)}>{bi.title}</a>
                     </div>
                     <div className='body'>
-                        <a href={"http://com.nicovideo.jp/community/" + bi.community_id}>{bi.community_id}</a> / 
-                        <a href={"http://www.nicovideo.jp/user/" + bi.owner_id}>{bi.owner_name}</a>
-                        <br />
+                        <a href={Utils.communityURL(bi.community_id)}>{bi.community_id}</a> / 
+                        <a href={Utils.userURL(bi.owner_id)}>{bi.owner_name}</a>
+                    <br />
                         {bi.description}
                     </div>
                 </div>
