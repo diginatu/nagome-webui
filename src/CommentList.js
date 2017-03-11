@@ -56,10 +56,11 @@ export default class CommentList extends Component {
     renderRow(row, i) {
         return (
             <ListItem key={i}>
-                <div className='left'>
-                    <div className="no">
-                        {row.no}
-                    </div>
+                <div
+                    className='left'
+                    onClick={this.props.onCommentInfoPop.bind(this, i)}
+                    id={i === this.props.commentInfoPopN ? "comment_info_pop_target" : ""}
+                >
                     {this.renderUserArt(row)}
                     <div className="user_name">
                         {row.user_name}

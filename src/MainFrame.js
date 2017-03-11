@@ -57,25 +57,26 @@ export default class MainFrame extends Component {
     renderBroadInfoPopover() {
         if (this.props.broadInfo === null) {
             return (
-                <section>
+                <div className='content'>
                     <p>
                         Broadcast information shown here.
                     </p>
-                </section>
+                </div>
             );
         } else {
             const bi = this.props.broadInfo;
             return (
-                <section>
-                    <h3>
+                <div className='content'>
+                    <div className='head'>
                         <a href={"http://live.nicovideo.jp/watch/" + bi.broad_id}>{bi.title}</a>
-                    </h3>
-                    <p>
+                    </div>
+                    <div className='body'>
                         <a href={"http://com.nicovideo.jp/community/" + bi.community_id}>{bi.community_id}</a> / 
                         <a href={"http://www.nicovideo.jp/user/" + bi.owner_id}>{bi.owner_name}</a>
-                    </p>
-                    <p>{bi.description}</p>
-                </section>
+                        <br />
+                        {bi.description}
+                    </div>
+                </div>
             );
         }
 
@@ -88,12 +89,13 @@ export default class MainFrame extends Component {
                 renderToolbar={this.renderToolbar.bind(this)}
                 renderBottomToolbar={()=> <BottomCommentBar /> }>
 
-                <Comment isBroadOpen={this.props.isBroadOpen} />
+                <Comment
+                    isBroadOpen={this.props.isBroadOpen}
+                />
 
                 <Popover
                     className='broad_info_pop'
                     isOpen={this.state.isBroadInfoPop}
-                    onOpen={this.openBroadInfoPop.bind(this, true)}
                     onHide={this.openBroadInfoPop.bind(this, false)}
                     onCancel={this.openBroadInfoPop.bind(this, false)}
                     getTarget={this.broadTitleTarget.bind(this)}

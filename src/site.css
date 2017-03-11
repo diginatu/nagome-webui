@@ -12,21 +12,45 @@ body {
     flex: 1 0 10px;
 }
 
-.broad_info_pop section {
-    margin: 18px;
+.popover__content .extra {
+    border-top: 1px solid rgba(0,0,0,.05);
 }
-.broad_info_pop h3 {
+.popover__content .content {
+    padding: 15px;
+    word-wrap: break-word;
+}
+.popover__content .head,
+.popover__content a,
+.popover__content .sub,
+.popover__content .body {
+    user-select: text;
+}
+.popover__content .content > .head {
+    font-weight: 700;
     font-size: 18px;
 }
-.broad_info_pop h3 a {
+.popover__content .content a {
     color: rgb(0, 0, 0);
+}
+.popover__content .content > .head a {
     text-decoration: none;
 }
-.broad_info_pop h3 a:hover {
+.popover__content .content > .head a:hover {
     text-decoration: underline;
 }
-.broad_info_pop p {
-    margin: 5px 0px;
+.popover__content .content > .sub {
+    font-size: 13px;
+    color: rgba(0,0,0,0.6);
+}
+.popover__content .content > .body {
+    font-size: 16px;
+}
+.popover__content .content > .thumb {
+    display: inline-block;
+    vertical-align: middle;
+}
+.comment_info_pop {
+
 }
 
 .drop_area {
@@ -49,7 +73,7 @@ body {
 .comment .left {
     display: flex;
     align-items: center;
-    flex-direction: row;
+    flex-direction: column;
     width: 80px;
     min-width: 80px;
     text-align: center;
