@@ -16,6 +16,7 @@ export default class Settings extends Component {
         st.auto_follow_next_waku = ReactDOM.findDOMNode(this.refs.auto_follow_next_waku).checked;
         st.auto_save_to0_slot = ReactDOM.findDOMNode(this.refs.auto_save_to0_slot).checked;
         st.user_name_get = ReactDOM.findDOMNode(this.refs.user_name_get).checked;
+        st.owner_comment = ReactDOM.findDOMNode(this.refs.owner_comment).checked;
         ngm.settingsSetCurrent(st);
 
         this.props.navigator.popPage();
@@ -50,7 +51,7 @@ export default class Settings extends Component {
                             ref="auto_follow_next_waku"
                             type='checkbox'
                         />
-                        Auto follow to next Waku (live broad)
+                        Auto follow to the new broadcast of same community (Tsugi Waku)
                     </label>
                 </p>
                 <p className='form_p'>
@@ -71,6 +72,16 @@ export default class Settings extends Component {
                             type='checkbox'
                         />
                         Auto getting user name
+                    </label>
+                </p>
+                <p className='form_p'>
+                    <label>
+                        <Input
+                            checked={this.state.settings.owner_comment}
+                            ref="owner_comment"
+                            type='checkbox'
+                        />
+                        Comment as an owner if the broadcast is yours
                     </label>
                 </p>
             </Page>
