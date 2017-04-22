@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {ngm} from './NagomeConn.js';
 import ons from 'onsenui';
-import {Input, Button, List, ListItem, Page, Toolbar, BackButton, Fab, Icon} from 'react-onsenui';
+import {Input, Button, List, ListItem, Page, Toolbar, BackButton, Fab, Icon, Popover} from 'react-onsenui';
 
 export default class SettingSlots extends Component {
     constructor() {
@@ -9,10 +9,20 @@ export default class SettingSlots extends Component {
         this.state = {
             slots: [],
             editi: -1,
-            selecti: -1,
+            settingListPopN: -1,
         };
         this.clickedNew = false;
         this.changed = false;
+    }
+
+    settingListPop(i) {
+        let st = this.state;
+        st.settingListPopN = i;
+        this.setState(st);
+    }
+
+    settingListPopTarget() {
+        return document.getElementById('setting_list_pop_target') || document.getElementById('main_frame_toolbar_center');
     }
 
     back() {
@@ -53,6 +63,14 @@ export default class SettingSlots extends Component {
         this.clickedNew = true;
     }
 
+    handleNameSelectAll(i) {
+        const input = document.getElementById('slot_name_edit_input');
+        if (input === null) {
+            return;
+        }
+        input.select();
+    }
+
     handleNameEdit(i) {
         this.changed = true;
         let st = this.state;
@@ -60,11 +78,15 @@ export default class SettingSlots extends Component {
         this.setState(st);
     }
 
-    handleNameEnd(i, e) {
+    handleNameEnd(i) {
+        const input = document.getElementById('slot_name_edit_input');
+        if (input === null) {
+            return;
+        }
         let st = this.state;
         st.editi = -1;
 
-        let s = e.target.value;
+        let s = input.value;
         if (s !== "") {
             st.slots[i].settings_name = s;
         }
@@ -73,7 +95,7 @@ export default class SettingSlots extends Component {
 
     handleNameKey(i, e) {
         if (e.keyCode === 13) {
-            this.handleNameEnd(i, e);
+            this.handleNameEnd(i);
         }
     }
 
@@ -90,9 +112,7 @@ export default class SettingSlots extends Component {
     }
 
     handleItemSelect(i) {
-        let st = this.state;
-        st.selecti = i;
-        this.setState(st);
+        this.settingListPop(i);
     }
 
     update(list) {
@@ -112,55 +132,23 @@ export default class SettingSlots extends Component {
     }
 
     renderRow(row, i) {
-        const selected = this.state.selecti === i;
         return (
             <ListItem
                 key={i}
-                onClick={this.handleItemSelect.bind(this, i)}
-                className={(selected?"selected ":"") + "slot_list_item"}
                 tappable
+                id={i === this.state.settingListPopN ? "setting_list_pop_target" : ""}
             >
                 <div className='left'>
                 </div>
-                {(() => {
-                    if (this.state.editi === i) {
-                        return (
-                            <div className='center'>
-                                <Input
-                                    value={row.settings_name}
-                                    onBlur={this.handleNameEnd.bind(this,i)}
-                                    onKeyDown={this.handleNameKey.bind(this,i)} >
-                                </Input>
-                            </div>
-                        );
-                    } else {
-                        return(
-                            <div className='center'>
-                                <span onDoubleClick={this.handleNameEdit.bind(this,i)}>
-                                    {row.settings_name}
-                                </span>
-                                { selected ?
-                                    <Button
-                                        onClick={this.handleNameEdit.bind(this,i)}
-                                        modifier='quiet'>
-                                        Edit
-                                    </Button>
-                                : null }
-                            </div>
-                        );
-                    }
-                })()}
+                <div
+                    className='center'
+                    onClick={this.handleItemSelect.bind(this,i)}
+                >
+                    <span>
+                        {row.settings_name}
+                    </span>
+                </div>
                 <div className='right'>
-                    { selected ?
-                        <Button
-                            onClick={this.handleDelete.bind(this, i)}
-                            style={{
-                                marginRight: "10px"
-                            }}
-                            modifier='danger'>
-                            Delete
-                        </Button>
-                    : null }
                     <Button
                         onClick={this.handleApply.bind(this, i)}
                         modifier='outline'>
@@ -168,6 +156,59 @@ export default class SettingSlots extends Component {
                     </Button>
                 </div>
             </ListItem>
+        );
+    }
+
+    renderSettingListPopver() {
+        const i = this.state.settingListPopN;
+        if (i === -1) {
+            return <div></div>;
+        }
+        return (
+            <div>
+                <div className='content'>
+                    {(() => {
+                        if (this.state.editi !== i) {
+                            return(
+                                <div className='head'>
+                                    <span onDoubleClick={this.handleNameEdit.bind(this,i)}>
+                                        {this.state.slots[i].settings_name}
+                                    </span>
+                                    <Button
+                                        onClick={this.handleNameEdit.bind(this,i)}
+                                        modifier='quiet'>
+                                        Edit
+                                    </Button>
+                                </div>
+                            );
+                        } else {
+                            return (
+                                <div className='head'>
+                                    <Input
+                                        inputId="slot_name_edit_input"
+                                        value={this.state.slots[i].settings_name}
+                                        onBlur={this.handleNameEnd.bind(this,i)}
+                                        onKeyDown={this.handleNameKey.bind(this,i)}
+                                        onFocus={this.handleNameSelectAll.bind(this)}
+                                        autofocus
+                                    >
+                                    </Input>
+                                </div>
+                            );
+                        }
+                    })()}
+                    <div className='sub'>
+                    </div>
+                    <Button
+                        onClick={this.handleDelete.bind(this, i)}
+                        style={{
+                            marginRight: "10px"
+                        }}
+                        modifier='danger'>
+                        Delete
+                    </Button>
+                </div>
+            </div>
         );
     }
 
@@ -187,6 +228,22 @@ export default class SettingSlots extends Component {
                     <div className="fill" onClick={this.handleItemSelect.bind(this, -1)}>
                     </div>
                 </div>
+                <Popover
+                    className='setting_list_pop'
+                    isOpen={this.state.settingListPopN !== -1}
+                    onHide={(() => {
+                        this.handleNameEnd.bind(this, this.state.editi)();
+                        this.settingListPop.bind(this, -1)();
+                    })}
+                    onCancel={(() => {
+                        this.handleNameEnd.bind(this, this.state.editi)();
+                        this.settingListPop.bind(this, -1)();
+                    })}
+                    getTarget={this.settingListPopTarget.bind(this)}
+                    direction='up down'
+                >
+                    {this.renderSettingListPopver()}
+                </Popover>
             </Page>
         );
     }
