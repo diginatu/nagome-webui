@@ -10,6 +10,7 @@ export default class SettingSlots extends Component {
             slots: [],
             editi: -1,
             settingListPopN: -1,
+            setCurrentN: -1,
         };
         this.clickedNew = false;
         this.changed = false;
@@ -115,6 +116,12 @@ export default class SettingSlots extends Component {
         this.settingListPop(i);
     }
 
+    handleSetCurrent(i) {
+        this.setCurrentN = i;
+        ngm.settingsCurrent();
+        this.changed = true;
+    }
+
     update(list) {
         this.setState({
             slots: list,
@@ -128,6 +135,15 @@ export default class SettingSlots extends Component {
             st.slots.push(c);
             this.setState(st);
             this.clickedNew = false;
+        }
+        if (this.setCurrentN !== -1) {
+            const i = this.setCurrentN;
+            let st = this.state;
+            const nm = st.slots[i].settings_name;
+            st.slots[i] = c;
+            st.slots[i].settings_name = nm;
+            this.setState(st);
+            this.setCurrentN = -1;
         }
     }
 
@@ -199,6 +215,13 @@ export default class SettingSlots extends Component {
                     })()}
                     <div className='sub'>
                     </div>
+                    <Button
+                        onClick={this.handleSetCurrent.bind(this, i)}
+                        style={{
+                            marginRight: "10px"
+                        }} >
+                        Set Current
+                    </Button>
                     <Button
                         onClick={this.handleDelete.bind(this, i)}
                         style={{
