@@ -89,7 +89,7 @@ export default class SettingSlots extends Component {
 
         let s = input.value;
         if (s !== "") {
-            st.slots[i].settings_name = s;
+            st.slots[i].name = s;
         }
         this.setState(st);
     }
@@ -131,7 +131,7 @@ export default class SettingSlots extends Component {
     updateCurrent(c) {
         if (this.clickedNew) {
             let st = this.state;
-            c.settings_name = "New Current Setting";
+            c.name = "New Current Setting";
             st.slots.push(c);
             this.setState(st);
             this.clickedNew = false;
@@ -139,9 +139,9 @@ export default class SettingSlots extends Component {
         if (this.setCurrentN !== -1) {
             const i = this.setCurrentN;
             let st = this.state;
-            const nm = st.slots[i].settings_name;
+            const nm = st.slots[i].name;
             st.slots[i] = c;
-            st.slots[i].settings_name = nm;
+            st.slots[i].name = nm;
             this.setState(st);
             this.setCurrentN = -1;
         }
@@ -161,7 +161,7 @@ export default class SettingSlots extends Component {
                     onClick={this.handleItemSelect.bind(this,i)}
                 >
                     <span>
-                        {row.settings_name}
+                        {row.name}
                     </span>
                 </div>
                 <div className='right'>
@@ -188,7 +188,7 @@ export default class SettingSlots extends Component {
                             return(
                                 <div className='head'>
                                     <span onDoubleClick={this.handleNameEdit.bind(this,i)}>
-                                        {this.state.slots[i].settings_name}
+                                        {this.state.slots[i].name}
                                     </span>
                                     <Button
                                         onClick={this.handleNameEdit.bind(this,i)}
@@ -202,7 +202,7 @@ export default class SettingSlots extends Component {
                                 <div className='head'>
                                     <Input
                                         inputId="slot_name_edit_input"
-                                        value={this.state.slots[i].settings_name}
+                                        value={this.state.slots[i].name}
                                         onBlur={this.handleNameEnd.bind(this,i)}
                                         onKeyDown={this.handleNameKey.bind(this,i)}
                                         onFocus={this.handleNameSelectAll.bind(this)}
