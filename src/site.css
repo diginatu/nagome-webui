@@ -52,6 +52,11 @@ body {
     font-size: 14px;
 }
 
+#main_toolbar .center {
+	display: flex;
+	justify-content: center;
+}
+
 .drop_area {
     border-radius: 30px;
     margin: 10px;

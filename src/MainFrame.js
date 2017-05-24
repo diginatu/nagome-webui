@@ -34,7 +34,7 @@ export default class MainFrame extends Component {
 
     renderToolbar() {
         return (
-            <Toolbar>
+            <Toolbar id="main_toolbar">
                 <div className='left'>
                     <ToolbarButton
                         onClick={this.props.onMenuOpen}
@@ -47,9 +47,10 @@ export default class MainFrame extends Component {
                 </div>
                 <div
                     className='center'
-                    id='main_frame_toolbar_center'
                     onClick={this.openBroadInfoPop.bind(this, true)}>
-                    {this.props.broadInfo === null ? "Nagome" : this.props.broadInfo.title}
+                    <div id='main_frame_toolbar_center'>
+                        {this.props.broadInfo === null ? "Nagome" : this.props.broadInfo.title}
+                    </div>
                 </div>
             </Toolbar>
         );

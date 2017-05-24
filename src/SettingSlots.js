@@ -152,7 +152,6 @@ export default class SettingSlots extends Component {
             <ListItem
                 key={i}
                 tappable
-                id={i === this.state.settingListPopN ? "setting_list_pop_target" : ""}
             >
                 <div className='left'>
                 </div>
@@ -160,7 +159,9 @@ export default class SettingSlots extends Component {
                     className='center'
                     onClick={this.handleItemSelect.bind(this,i)}
                 >
-                    <span>
+                    <span
+                        id={i === this.state.settingListPopN ? "setting_list_pop_target" : ""}
+                    >
                         {row.name}
                     </span>
                 </div>
