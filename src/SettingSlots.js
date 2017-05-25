@@ -91,6 +91,8 @@ export default class SettingSlots extends Component {
         if (s !== "") {
             st.slots[i].name = s;
         }
+
+        st.settingListPopN = -1; // close popup
         this.setState(st);
     }
 
@@ -109,6 +111,7 @@ export default class SettingSlots extends Component {
         this.changed = true;
         let st = this.state;
         st.slots.splice(i, 1);
+        st.settingListPopN = -1; // close popup
         this.setState(st);
     }
 
@@ -142,6 +145,7 @@ export default class SettingSlots extends Component {
             const nm = st.slots[i].name;
             st.slots[i] = c;
             st.slots[i].name = nm;
+            st.settingListPopN = -1; // close popup
             this.setState(st);
             this.setCurrentN = -1;
         }
