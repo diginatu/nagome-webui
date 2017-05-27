@@ -10,8 +10,8 @@ export default class SettingSlots extends Component {
             slots: [],
             editi: -1,
             settingListPopN: -1,
-            setCurrentN: -1,
         };
+        this.setCurrentN = -1;
         this.clickedNew = false;
         this.changed = false;
     }
@@ -126,9 +126,9 @@ export default class SettingSlots extends Component {
     }
 
     update(list) {
-        this.setState({
-            slots: list,
-        });
+        let st = this.state;
+        st.slots = list;
+        this.setState(st);
     }
 
     updateCurrent(c) {
