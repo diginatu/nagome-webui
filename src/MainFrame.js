@@ -49,7 +49,7 @@ export default class MainFrame extends Component {
                     className='center'
                     onClick={this.openBroadInfoPop.bind(this, true)}>
                     <div id='main_frame_toolbar_center'>
-                        {this.props.broadInfo === null ? "Nagome" : this.props.broadInfo.title}
+                        {this.props.broadInfo == null ? "Nagome" : this.props.broadInfo.title}
                     </div>
                 </div>
             </Toolbar>
@@ -57,7 +57,7 @@ export default class MainFrame extends Component {
     }
 
     renderBroadInfoPopover() {
-        if (this.props.broadInfo === null) {
+        if (this.props.broadInfo == null) {
             return (
                 <div className='content'>
                     <p>

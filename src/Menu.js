@@ -20,23 +20,22 @@ export default class Menu extends Component {
     }
 
     settingsDirectHandler(arrM) {
-        for (let i = 0, len = arrM.length; i < len; i++) {
-            let m = arrM[i];
+        for (const m of arrM) {
             switch (m.command) {
             case "Plug.List":
-                if (this.refSettingPlugin === null) return;
+                if (this.refSettingPlugin == null) return;
                 this.refSettingPlugin.updateList(m.content.plugins);
                 break;
 
             case "Settings.Current":
-                if (this.refSettings !== null)
+                if (this.refSettings != null)
                     this.refSettings.update(m.content);
-                if (this.refSettingSlots !== null)
+                if (this.refSettingSlots != null)
                     this.refSettingSlots.updateCurrent(m.content);
                 break;
 
             case "Settings.All":
-                if (this.refSettingSlots === null) return;
+                if (this.refSettingSlots == null) return;
                 this.refSettingSlots.update(m.content.config);
                 break;
 

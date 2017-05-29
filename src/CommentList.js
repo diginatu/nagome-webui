@@ -55,7 +55,7 @@ export default class CommentList extends Component {
             <div>
                 <div className='content'>
                     <div className='right'>
-                        { data.user_thumbnail_url === undefined ?
+                        { data.user_thumbnail_url == null ?
                                 this.renderUserArt(data.user_id) :
                                 <img
                                     src={data.user_thumbnail_url}
@@ -110,9 +110,9 @@ export default class CommentList extends Component {
 
     djb2_hash(str) {
         let hash = 5381;
-        for (let i = 0; i < str.length; i++) {
+        for (const chr of str) {
             // '|0' converts into 32-bit int
-            hash = (((hash << 5) + hash) + str.charCodeAt(i))|0;
+            hash = (((hash << 5) + hash) + chr)|0;
         }
         this.userArtSeed = hash;
         return hash;
@@ -121,14 +121,14 @@ export default class CommentList extends Component {
     lcg_random(seed = this.userArtSeed) {
         const a = 22695477;
         const c = 1;
-        let rand = (seed * a + c)|0;
+        const rand = (seed * a + c)|0;
         this.userArtSeed = rand;
         return rand; // '|0' converts into 32-bit int
     }
 
     random_color() {
         const r = this.lcg_random() >>> 2;
-        let colnm = '#' + ('000000' + r.toString(16)).slice(-6);
+        const colnm = '#' + ('000000' + r.toString(16)).slice(-6);
         return colnm;
     }
 

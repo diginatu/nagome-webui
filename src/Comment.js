@@ -22,8 +22,7 @@ export default class Comment extends Component {
 
     clearCommentsHandler(arrM) {
         let st = this.state;
-        for (let i = 0, len = arrM.length; i < len; i++) {
-            const m = arrM[i];
+        for (const m of arrM) {
             switch (m.command) {
             case "ClearComments":
                 st = { data: [] };
@@ -39,8 +38,7 @@ export default class Comment extends Component {
 
     commentHandler(arrM) {
         let st = this.state;
-        for (let i = 0, len = arrM.length; i < len; i++) {
-            const m = arrM[i];
+        for (const m of arrM) {
             if (m.command === "Got") {
                 m.content.date = m.content.date.split(RegExp('[T.]'))[1];
                 st.data.push(m.content);
@@ -53,7 +51,7 @@ export default class Comment extends Component {
 
     handleDrop(e) {
         e.preventDefault(); // stop moving page
-        var text = e.dataTransfer.getData('Text');
+        const text = e.dataTransfer.getData('Text');
         ngm.broadConnect(text);
         return false;
     }

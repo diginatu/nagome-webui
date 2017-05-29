@@ -34,7 +34,7 @@ export default class App extends Component {
     renderPage(route, navigator) {
         let props = route.props || {};
         props.navigator = navigator;
-        if (route.key !== undefined) {
+        if (route.key != null) {
             props.key = route.key;
         } else {
             console.log("Navigator pushed without key.");

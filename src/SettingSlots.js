@@ -66,7 +66,7 @@ export default class SettingSlots extends Component {
 
     handleNameSelectAll(i) {
         const input = document.getElementById('slot_name_edit_input');
-        if (input === null) {
+        if (input == null) {
             return;
         }
         input.select();
@@ -81,7 +81,7 @@ export default class SettingSlots extends Component {
 
     handleNameEnd(i) {
         const input = document.getElementById('slot_name_edit_input');
-        if (input === null) {
+        if (input == null) {
             return;
         }
         let st = this.state;

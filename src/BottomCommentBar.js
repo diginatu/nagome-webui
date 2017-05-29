@@ -27,7 +27,7 @@ export default class App extends Component {
                         value={this.state.text} float
                         onChange={(event) => { this.setState({text: event.target.value});} }
                         onKeyPress={(event) => {
-                            var code = event.keyCode || event.which;
+                            const code = event.keyCode || event.which;
                             if (code === 13) {
                                 this.sendComment();
                             }

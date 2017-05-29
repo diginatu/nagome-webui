@@ -29,22 +29,21 @@ export default class MainPage extends Component {
     }
 
     openBroadTab() {
-        if (this.state.broadInfo === null) {
+        if (this.state.broadInfo == null) {
             return;
         }
         this.browserTab = window.open(Utils.broadcastURL(this.state.broadInfo.broad_id), '_blank');
     }
 
     closeBroadTab() {
-        if (this.browserTab === null || this.browserTab.closed) {
+        if (this.browserTab == null || this.browserTab.closed) {
             return;
         }
         this.browserTab.close();
     }
 
     UIEventHandler(arrM) {
-        for (let i = 0, len = arrM.length; i < len; i++) {
-            let m = arrM[i];
+        for (const m of arrM) {
             switch (m.command) {
             case "ClearComments":
                 break;
@@ -73,14 +72,13 @@ export default class MainPage extends Component {
         let st = this.state;
         let chApp = false;
 
-        for (let i = 0, len = arrM.length; i < len; i++) {
-            let m = arrM[i];
+        for (const m of arrM) {
             switch (m.command) {
             case 'Broad.Open':
                 chApp = true;
                 st.isBroadOpen = true;
                 st.broadInfo = m.content;
-                if (this.browserTab !== null && !this.browserTab.closed) {
+                if (this.browserTab != null && !this.browserTab.closed) {
                     this.browserTab.location.assign(Utils.broadcastURL(st.broadInfo.broad_id));
                 }
                 break;
@@ -104,7 +102,7 @@ export default class MainPage extends Component {
     }
 
     render() {
-        if (this.state.broadInfo === null) {
+        if (this.state.broadInfo == null) {
             document.title = "Nagome";
         } else {
             document.title = this.state.broadInfo.title+" / "+this.state.broadInfo.owner_name+" - Nagome";

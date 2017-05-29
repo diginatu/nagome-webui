@@ -25,7 +25,8 @@ class WebSocketConn {
             this.wsconn = new WebSocket(`ws://localhost:8753/ws`);
         } else {
             // make absolute ws uri
-            let loc = window.location, prot;
+            const loc = window.location;
+            let prot;
             if (loc.protocol === "https:") {
                 prot = "wss:";
             } else {
@@ -64,7 +65,7 @@ class WebSocketConn {
 
 class Ngmconn {
     constructor(websocketEventHandlerFn) {
-        this.evHdlr = [];
+        this.evHdlrs = [];
         this.domainList = [];
         this.ws = new WebSocketConn(websocketEventHandlerFn);
     }
@@ -72,28 +73,28 @@ class Ngmconn {
     handleMessage(jsonArrM) {
         let arrMD = [];
         let m;
-        for (let i = 0, len = jsonArrM.length; i < len; i++) {
+        for (const jsonm of jsonArrM) {
             try {
-                m = JSON.parse(jsonArrM[i]);
+                m = JSON.parse(jsonm);
             } catch (e) {
                 console.log(e);
-                console.log(jsonArrM[i]);
+                console.log(jsonm);
                 continue;
             }
-            let ind = this.domainList.indexOf(m.domain);
+            const ind = this.domainList.indexOf(m.domain);
             if (ind === -1) {
                 console.log(m);
                 continue;
             }
-            if (arrMD[ind] === undefined) {
+            if (arrMD[ind] == null) {
                 arrMD[ind] = [];
             }
             arrMD[ind].push(m);
         }
         for (let i = 0, len = arrMD.length; i < len; i++) {
-            if (arrMD[i] !== undefined) {
-                for (let j = 0, lenf = this.evHdlr[i].length; j < lenf; j++) {
-                    this.evHdlr[i][j](arrMD[i]);
+            if (arrMD[i] != null) {
+                for (const handler of this.evHdlrs[i]) {
+                    handler(arrMD[i]);
                 }
             }
         }
@@ -109,14 +110,14 @@ class Ngmconn {
             ind = this.domainList.length;
             this.domainList.push(domain);
         }
-        if (this.evHdlr[ind] === undefined) {
-            this.evHdlr[ind] = [];
+        if (this.evHdlrs[ind] == null) {
+            this.evHdlrs[ind] = [];
         }
-        this.evHdlr[ind].push(fn);
+        this.evHdlrs[ind].push(fn);
     }
 
     broadConnect(uri) {
-        if (uri !== "" && uri !== null) {
+        if (uri !== "" && uri != null) {
             this.ws.sendObj(
                 {
                     "domain": "nagome_query",
