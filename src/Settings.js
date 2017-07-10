@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {ngm} from './NagomeConn.js';
-import {Page, Toolbar, BackButton, Input} from 'react-onsenui';
+import {Page, Toolbar, BackButton, Checkbox} from 'react-onsenui';
 
 export default class Settings extends Component {
     constructor() {
@@ -46,40 +46,36 @@ export default class Settings extends Component {
             <Page renderToolbar={this.renderToolbar.bind(this)}>
                 <p className='form_p'>
                     <label>
-                        <Input
+                        <Checkbox
                             checked={this.state.settings.auto_follow_next_waku}
                             ref="auto_follow_next_waku"
-                            type='checkbox'
                         />
                         Auto follow to the new broadcast of same community (Tsugi Waku)
                     </label>
                 </p>
                 <p className='form_p'>
                     <label>
-                        <Input
+                        <Checkbox
                             checked={this.state.settings.auto_save_to0_slot}
                             ref="auto_save_to0_slot"
-                            type='checkbox'
                         />
                         Auto save to slot 0
                     </label>
                 </p>
                 <p className='form_p'>
                     <label>
-                        <Input
+                        <Checkbox
                             checked={this.state.settings.user_name_get}
                             ref="user_name_get"
-                            type='checkbox'
                         />
                         Auto getting user name
                     </label>
                 </p>
                 <p className='form_p'>
                     <label>
-                        <Input
+                        <Checkbox
                             checked={this.state.settings.owner_comment}
                             ref="owner_comment"
-                            type='checkbox'
                         />
                         Comment as an owner if the broadcast is yours
                     </label>

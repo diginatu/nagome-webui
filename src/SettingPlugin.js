@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {ngm} from './NagomeConn.js';
-import {List, ListItem, Page, Toolbar, BackButton, Input} from 'react-onsenui';
+import {List, ListItem, Page, Toolbar, BackButton, Checkbox} from 'react-onsenui';
 
 export default class SettingPlugin extends Component {
     constructor() {
@@ -35,8 +35,7 @@ export default class SettingPlugin extends Component {
         return (
             <ListItem key={i}>
                 <div className='left'>
-                    <Input
-                        type='checkbox'
+                    <Checkbox
                         disabled={row.no === 0}
                         checked={row.state === 1}
                         inputId={`checkbox-${row}`}

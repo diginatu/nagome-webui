@@ -120,7 +120,7 @@ body {
     display: flex;
     align-items: center;
 }
-.form_p ons-input {
+.form_p .checkbox {
     margin-right: 10px;
 }
 
