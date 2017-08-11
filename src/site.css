@@ -70,6 +70,7 @@ body {
     font-size: 20px,
 }
 
+/* comment list */
 .comment {
     overflow: auto;
     word-break: break-all;
@@ -97,6 +98,14 @@ body {
 
 .slot_list_item.selected {
     background-color: rgb(225, 235, 245);
+}
+
+.bottom_toolbar_input {
+    padding-left: 15;
+    flex: 1;
+}
+.bottom_toolbar_input input {
+    width: 100%;
 }
 
 .button--danger, .button--danger:active {

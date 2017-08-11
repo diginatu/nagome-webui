@@ -24,17 +24,15 @@ export default class App extends Component {
                     height:     '100%',
                     alignItems: 'center'}}>
                     <Input
-                        value={this.state.text} float
+                        className='bottom_toolbar_input'
+                        value={this.state.text}
+                        float
                         onChange={(event) => { this.setState({text: event.target.value});} }
                         onKeyPress={(event) => {
                             const code = event.keyCode || event.which;
                             if (code === 13) {
                                 this.sendComment();
                             }
-                        }}
-                        style={{
-                            paddingLeft: 15,
-                            flex: 1
                         }}
                         placeholder='Input message'
                     />
