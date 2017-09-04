@@ -251,6 +251,43 @@ class Ngmconn {
             }
         );
     }
+
+    userSetName(id, name) {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_query",
+                "command": "User.SetName",
+                "content": {
+                    "id": id,
+                    "name": name,
+                },
+            }
+        );
+    }
+
+    userDelete(id) {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_query",
+                "command": "User.Delete",
+                "content": {
+                    "id": id,
+                },
+            }
+        );
+    }
+
+    userFetch(id) {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_query",
+                "command": "User.Fetch",
+                "content": {
+                    "id": id,
+                },
+            }
+        );
+    }
 }
 
 // NagomeInit (function (string event), function(object nagomeMessage))

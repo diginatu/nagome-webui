@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Popover, List, ListItem, ListHeader, Button} from 'react-onsenui';
 import ons from 'onsenui';
 import Utils from './Utils';
+import {ngm} from './NagomeConn.js';
 
 export default class CommentList extends Component {
     constructor() {
@@ -20,15 +21,35 @@ export default class CommentList extends Component {
             message: 'Input new user name',
             cancelable: true,
             callback: (nm) => {
-                console.log(nm);
+                ngm.userSetName(id, nm);
             },
         }).catch(()=>{});
     }
 
     fetchUserName(id) {
+        this.openCommentInfoPop(-1);
+        ons.notification.confirm({
+            title: 'Fetch User Name',
+            message: `Are you sure you want to fetch the user name and overwrite?`,
+            callback: (d) => {
+                if (d === 1) {
+                    ngm.userFetch(id);
+                }
+            }
+        });
     }
 
     deleteUserName(id) {
+        this.openCommentInfoPop(-1);
+        ons.notification.confirm({
+            title: 'Delete User',
+            message: `Are you sure you want to delete the user?`,
+            callback: (d) => {
+                if (d === 1) {
+                    ngm.userDelete(id);
+                }
+            }
+        });
     }
 
     openCommentInfoPop(n) {
