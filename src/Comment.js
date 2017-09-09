@@ -16,11 +16,11 @@ export default class Comment extends Component {
             ],
         };
 
-        ngm.addNgmEvHandler("nagome_comment", this.commentHandler.bind(this));
-        ngm.addNgmEvHandler("nagome_ui", this.clearCommentsHandler.bind(this));
+        ngm.addNgmEvHandler("nagome_ui", this.ngmEvUIHandler.bind(this));
+        ngm.addNgmEvHandler("nagome_comment", this.ngmEvCommentHandler.bind(this));
     }
 
-    clearCommentsHandler(arrM) {
+    ngmEvUIHandler(arrM) {
         let st = this.state;
         for (const m of arrM) {
             switch (m.command) {
@@ -36,7 +36,7 @@ export default class Comment extends Component {
         this.setState(st);
     }
 
-    commentHandler(arrM) {
+    ngmEvCommentHandler(arrM) {
         let st = this.state;
         for (const m of arrM) {
             if (m.command === "Got") {
