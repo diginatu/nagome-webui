@@ -57,16 +57,16 @@ export default class MainFrame extends Component {
     }
 
     renderBroadInfoPopover() {
-        if (this.props.broadInfo == null) {
+        const bi = this.props.broadInfo;
+        if (bi == null) {
             return (
                 <div className='content'>
                     <p>
-                        Broadcast information shown here.
+                        The broadcast information is shown here.
                     </p>
                 </div>
             );
         } else {
-            const bi = this.props.broadInfo;
             return (
                 <div className='content'>
                     <div className='head'>
@@ -75,8 +75,9 @@ export default class MainFrame extends Component {
                     <div className='body'>
                         <a href={Utils.communityURL(bi.community_id)}>{bi.community_id}</a> / 
                         <a href={Utils.userURL(bi.owner_id)}>{bi.owner_name}</a>
-                    <br />
-                        {bi.description}
+                        <p className="desc">
+                            {bi.description}
+                        </p>
                     </div>
                 </div>
             );

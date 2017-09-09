@@ -20,6 +20,7 @@ body {
     word-wrap: break-word;
 }
 .popover__content a,
+.popover__content p,
 .popover__content div {
     user-select: text;
 }
@@ -67,10 +68,35 @@ body {
     color: rgb(90, 90, 90);
 }
 .drop_area p {
-    font-size: 20px,
+    font-size: 20px;
 }
 
-/* comment list */
+
+/* Main Frame Toolbar */
+#main_toolbar > .toolbar__left {
+    width: 75px;
+}
+#main_toolbar > .toolbar__center {
+    width: calc(100% - 150px);
+}
+#main_toolbar > .toolbar__right {
+    width: 75px;
+}
+#main_frame_toolbar_center {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.broad_info_pop .content > .head {
+    margin-bottom: 15px;
+}
+.broad_info_pop .content .desc {
+    font-size: 13px;
+    color: rgba(0,0,0,0.8);
+}
+
+
+/* Comment List */
 .comment {
     overflow: auto;
     word-break: break-all;
