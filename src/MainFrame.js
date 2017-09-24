@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Popover, Page, Dialog, ProgressCircular, Toolbar, ToolbarButton, Icon} from 'react-onsenui';
 import ons from 'onsenui';
 
+import {ngm} from './NagomeConn.js';
 import Utils from './Utils.js';
 import Comment from './Comment.js';
 import BottomCommentBar from './BottomCommentBar.js';
@@ -12,6 +13,10 @@ export default class MainFrame extends Component {
         this.state = {
             isPortrait: true,
             isBroadInfoPop: false,
+            broadCounts: {
+                comment_count: "-",
+                watch_count: "-",
+            },
         };
         ons.orientation.on("change", (e) => {
             if (this.state.isPortrait !== e.isPortrait) {
@@ -20,6 +25,30 @@ export default class MainFrame extends Component {
                 });
             }
         });
+
+        ngm.addNgmEvHandler("nagome", this.nagomeEventHandler.bind(this));
+    }
+
+    nagomeEventHandler(arrM) {
+        let st = this.state;
+        let chApp = false;
+
+        for (const m of arrM) {
+            switch (m.command) {
+            case 'Broad.Info':
+                chApp = true;
+                st.broadCounts = m.content;
+                break;
+            case 'Broad.Close':
+                chApp = true;
+                st.broadCounts.comment_count = "-";
+                st.broadCounts.watch_count = "-";
+                break;
+            default:
+            }
+        }
+
+        if (chApp) this.setState(st);
     }
 
     openBroadInfoPop(open) {
@@ -51,6 +80,16 @@ export default class MainFrame extends Component {
                     <div id='main_frame_toolbar_center'>
                         {this.props.broadInfo == null ? "Nagome" : this.props.broadInfo.title}
                     </div>
+                </div>
+                <div className='right'>
+                    <p>
+                        <Icon icon='md-account' className="right_count_icon" />
+                        {this.state.broadCounts.watch_count}
+                    </p>
+                    <p>
+                        <Icon icon='md-comment' className="right_count_icon" />
+                        {this.state.broadCounts.comment_count}
+                    </p>
                 </div>
             </Toolbar>
         );

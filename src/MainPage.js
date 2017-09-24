@@ -88,7 +88,6 @@ export default class MainPage extends Component {
                 st.broadInfo = null;
                 break;
             default:
-                console.log(m);
             }
         }
 

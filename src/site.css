@@ -81,6 +81,17 @@ body {
 }
 #main_toolbar > .toolbar__right {
     width: 75px;
+    padding: 5px 0px;
+}
+#main_toolbar > .toolbar__right > p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: left;
+}
+#main_toolbar .right_count_icon {
+    width: 18px;
+    text-align: center;
 }
 #main_frame_toolbar_center {
     width: 100%;
