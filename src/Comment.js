@@ -27,7 +27,7 @@ export default class Comment extends Component {
             case "ClearComments":
                 st = { data: [] };
                 break;
-            case "Dialog":
+            case "Notification":
                 break;
             default:
                 console.log(m);

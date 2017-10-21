@@ -47,15 +47,16 @@ export default class MainPage extends Component {
             switch (m.command) {
             case "ClearComments":
                 break;
-            case "Dialog":
+            case "Notification":
                 switch (m.content.type) {
                 case 'Info':
                 case 'Warn':
-                    ons.notification.alert({
-                        title: m.content.type+" : "+m.content.title,
-                        message: m.content.description,
-                        cancelable: true,
-                    }).catch((e)=>{});
+                    ons.notification.toast({
+                        message: m.content.title+" : "+m.content.description,
+                        buttonLabel: 'close',
+                        timeout: 3000,
+                        force: true,
+                    }).catch(()=>{});
 
                     break;
                 default:
