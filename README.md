@@ -18,7 +18,7 @@ npm install
 ~~~
 
 This project is created by [create-react-app](https://github.com/facebookincubator/create-react-app).
-So you can start developing running this command.
+So you can start developing running following command.
 
 ~~~ sh
 npm start
@@ -48,3 +48,8 @@ These are assuming it is hosted at /app/.
 
 These pre-build productions include [Onsen UI](https://onsen.io/) (Apache License).
 
+
+Tasks
+-----
+
+* [] fix the size of user icon
