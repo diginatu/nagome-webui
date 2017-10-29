@@ -52,4 +52,4 @@ These pre-build productions include [Onsen UI](https://onsen.io/) (Apache Licens
 Tasks
 -----
 
-* [] fix the size of user icon
+* [ ] Display elapsed time

@@ -123,11 +123,17 @@ body {
 }
 .user_art {
     border: 0;
+    border-collapse: separate;
+    border-spacing: 2px;
 }
 .user_art td {
     padding: 0;
     width:  10px;
     height: 10px;
+}
+.user_img {
+    width:  36px;
+    /*height: 10px;*/
 }
 .comment .center .comment_text {
     user-select: text;
