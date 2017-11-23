@@ -2,4 +2,5 @@
 
 npm run build
 cp plugin.yml server_config.json build/
-zip -r nagome_webui.zip build/
+mv build app
+zip -r nagome_webui.zip app/
