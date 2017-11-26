@@ -48,6 +48,16 @@ These are assuming it is hosted at /app/.
 
 These pre-build productions include [Onsen UI](https://onsen.io/) (Apache License).
 
+Release
+-------
+
+``` sh
+# increase version number in package.json
+git tag v?
+git push --tags
+./RELEASE.sh
+# upload created zip file
+```
 
 Tasks
 -----
