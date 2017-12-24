@@ -132,9 +132,9 @@ export default class CommentList extends Component {
 
     djb2_hash(str) {
         let hash = 5381;
-        for (const chr of str) {
+        for (var i = 0, len = str.length; i < len; i++) {
             // '|0' converts into 32-bit int
-            hash = (((hash << 5) + hash) + chr)|0;
+            hash = (((hash << 5) + hash) + str.charCodeAt(i))|0;
         }
         this.userArtSeed = hash;
         return hash;
