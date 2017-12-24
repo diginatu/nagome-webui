@@ -79,7 +79,7 @@ export default class CommentList extends Component {
                         { data.user_thumbnail_url == null ?
                                 this.renderUserArt(data.user_id) :
                                 <img
-                                    src={data.user_thumbnail_url.replace("/usericon/", "/usericon/s/")}
+                                    src={data.user_thumbnail_url}
                                     alt="user icon"
                                     className="user_img"
                                 >
