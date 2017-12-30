@@ -68,7 +68,7 @@ export default class Menu extends Component {
                             ngm.broadDisconnect();
                             this.props.onCloseBroadTab();
                         }},
-                    {text: "Open tab (browser only)",
+                    {text: "Open tab",
                         icon: "fa-play-circle-o",
                         fn: () => {
                             this.props.onOpenBroadTab();

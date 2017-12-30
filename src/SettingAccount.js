@@ -59,6 +59,8 @@ export default class SettingAccount extends Component {
                     <p>
                         <Input
                             modifier='underbar'
+                            type='email'
+                            name='email'
                             ref="mail"
                             float
                             onChange={this.handleMailChange.bind(this)}

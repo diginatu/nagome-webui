@@ -139,6 +139,10 @@ body {
     user-select: text;
 }
 
+.comment_info_pop .popover__content {
+    width: 250px;
+}
+
 .slot_list_item.selected {
     background-color: rgb(225, 235, 245);
 }
