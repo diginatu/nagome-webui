@@ -6,7 +6,7 @@
     "react-scripts": "0.8.4"
   },
   "dependencies": {
-    "onsenui": "^2.0.4",
+    "onsenui": "^2.4.2",
     "react": "^15.4.1",
     "react-dom": "^15.4.0",
     "react-onsenui": "^1.0.3"
