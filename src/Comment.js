@@ -10,14 +10,36 @@ export default class Comment extends Component {
         super();
         this.state = {
             data: [
-//{"no":70,"date":"20:08:58","raw":"おつ","comment":"おつ","is_premium":true,"is_broadcaster":false,"is_staff":false,"is_anonymity":false,"score":0,"user_id":"11246304","user_name":"デジネイ","user_thumbnail_url":"http://usericon.nimg.jp/usericon/1124/11246304.jpg"},
-//{"no":71,"date":"20:09:17","raw":"anony","comment":"anony","is_premium":true,"is_broadcaster":false,"is_staff":false,"is_anonymity":true,"score":0,"user_id":"TnPRtKVgHdYW4Uklky8yjLn982Y","user_name":""},
-//{"no":72,"date":"20:09:17","raw":"/disconnect","comment":"/disconnect","is_premium":true,"is_broadcaster":true,"is_staff":false,"is_anonymity":true,"score":0,"user_id":"TnPRtKVgHdYW4Uklky8yjLn982Y","user_name":"Broadcaster"}
+                //{"no":70,"date":"20:08:58","raw":"おつ","comment":"おつ","is_premium":true,"is_broadcaster":false,"is_staff":false,"is_anonymity":false,"score":0,"user_id":"11246304","user_name":"デジネイ","user_thumbnail_url":"http://usericon.nimg.jp/usericon/1124/11246304.jpg"},
+                //{"no":71,"date":"20:09:17","raw":"anony","comment":"anony","is_premium":true,"is_broadcaster":false,"is_staff":false,"is_anonymity":true,"score":0,"user_id":"TnPRtKVgHdYW4Uklky8yjLn982Y","user_name":""},
+                //{"no":72,"date":"20:09:17","raw":"/disconnect","comment":"/disconnect","is_premium":true,"is_broadcaster":true,"is_staff":false,"is_anonymity":true,"score":0,"user_id":"TnPRtKVgHdYW4Uklky8yjLn982Y","user_name":"Broadcaster"}
             ],
         };
 
+        ngm.addNgmEvHandler("nagome", this.ngmEvHandler.bind(this));
         ngm.addNgmEvHandler("nagome_ui", this.ngmEvUIHandler.bind(this));
         ngm.addNgmEvHandler("nagome_comment", this.ngmEvCommentHandler.bind(this));
+    }
+
+    ngmEvHandler(arrM) {
+        let st = this.state;
+        for (const m of arrM) {
+            switch (m.command) {
+            case "User.Update":
+                const ct = m.content;
+                let updateCount = 0;
+                for (let i = st.data.length-1; i >= 0 && updateCount < 10; i--) {
+                    if (st.data[i].user_id === ct.id) {
+                        st.data[i].user_name = ct.name;
+                        st.data[i].user_thumbnail_url = ct.thumbnail_url;
+                        updateCount++;
+                    }
+                }
+                break;
+            default:
+            }
+        }
+        this.setState(st);
     }
 
     ngmEvUIHandler(arrM) {

@@ -77,23 +77,23 @@ export default class CommentList extends Component {
                 <div className='content'>
                     <div className='right'>
                         { data.user_thumbnail_url == null ?
-                                this.renderUserArt(data.user_id) :
-                                <img
-                                    src={data.user_thumbnail_url}
-                                    alt="user icon"
-                                    className="user_img"
-                                >
-                                </img> }
+                            this.renderUserArt(data.user_id) :
+                            <img
+                                src={data.user_thumbnail_url}
+                                alt="user icon"
+                                className="user_img"
+                            >
+                            </img> }
                     </div>
                     <div className='head'>
                         {data.user_name || "???"}
                     </div>
                     <div className='sub'>
                         { (data.is_anonymity || data.is_broadcaster) ?
-                                data.user_id :
-                                <a href={Utils.userURL(data.user_id)}>
-                                    {data.user_id}
-                                </a> }
+                            data.user_id :
+                            <a href={Utils.userURL(data.user_id)}>
+                                {data.user_id}
+                            </a> }
                     </div>
                     <Button
                         modifier='outline'
