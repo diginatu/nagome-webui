@@ -204,6 +204,15 @@ class Ngmconn {
         );
     }
 
+    appVersion() {
+        this.ws.sendObj(
+            {
+                "domain": "nagome_direct",
+                "command": "App.Version"
+            }
+        );
+    }
+
     settingsSetCurrent(settings) {
         this.ws.sendObj(
             {

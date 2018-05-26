@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import {Page, Splitter, SplitterSide, SplitterContent} from 'react-onsenui';
+import {Page, Splitter, SplitterSide, SplitterContent, Modal, Button} from 'react-onsenui';
 import ons from 'onsenui';
 
 import {ngm} from './NagomeConn.js';
 import Utils from './Utils.js';
 import Menu from './Menu.js';
 import MainFrame from './MainFrame.js';
+import {version, name} from '../package.json';
 
 export default class MainPage extends Component {
     constructor() {
@@ -15,11 +16,14 @@ export default class MainPage extends Component {
             isWsConnecting: false,
             isBroadOpen: false,
             broadInfo: null,
+            appVersionModalIsOpen: false,
+            appVersion: null,
         };
         this.browserTab = null;
 
         ngm.addNgmEvHandler("nagome_ui", this.UIEventHandler.bind(this));
         ngm.addNgmEvHandler("nagome", this.nagomeEventHandler.bind(this));
+        ngm.addNgmEvHandler("nagome_directngm", this.nagomeDirectEventHandler.bind(this));
     }
 
     setIsWsConnecting(f) {
@@ -89,6 +93,26 @@ export default class MainPage extends Component {
                 st.broadInfo = null;
                 break;
             default:
+                console.log(m);
+            }
+        }
+
+        if (chApp) this.setState(st);
+    }
+
+    nagomeDirectEventHandler(arrM) {
+        let st = this.state;
+        let chApp = false;
+
+        for (const m of arrM) {
+            switch (m.command) {
+            case 'App.Version':
+                chApp = true;
+                st.appVersion = m.content;
+                st.appVersionModalIsOpen = true;
+                break;
+            default:
+                console.log(m);
             }
         }
 
@@ -101,6 +125,49 @@ export default class MainPage extends Component {
         this.setState(t);
     }
 
+    renderModal() {
+        if (this.state.appVersion == null) {
+            return null;
+        }
+        return (
+            <Modal
+                isOpen={this.state.appVersionModalIsOpen}
+                class="main_modal"
+            >
+                <section>
+                    <img src={process.env.PUBLIC_URL + "favicon.ico"} />
+                    <div class="versions_text">
+                        <p>
+                            <span>
+                                {this.state.appVersion.name}
+                            </span>
+                            <span>
+                                {this.state.appVersion.version}
+                            </span>
+                        </p>
+                        <p>
+                            <span>
+                                {name}
+                            </span>
+                            <span>
+                                v{version}
+                            </span>
+                        </p>
+                    </div>
+                    <p>
+                        <Button onClick={() => {
+                            let st = this.state;
+                            st.appVersionModalIsOpen = false;
+                            this.setState(st);
+                        }}>
+                            Close
+                        </Button>
+                    </p>
+                </section>
+            </Modal>
+        );
+    }
+
     render() {
         if (this.state.broadInfo == null) {
             document.title = "Nagome";
@@ -109,7 +176,9 @@ export default class MainPage extends Component {
         }
 
         return (
-            <Page>
+            <Page
+                renderModal={this.renderModal.bind(this)}
+            >
                 <Splitter>
                     <SplitterSide
                         side='left'

@@ -53,6 +53,18 @@ body {
     font-size: 14px;
 }
 
+/* MainPage */
+.main_modal .versions_text {
+    margin: 30px;
+}
+.main_modal p {
+    margin: 5px;
+}
+.main_modal p span {
+    margin: 15px;
+}
+
+
 #main_toolbar .center {
 	display: flex;
 	justify-content: center;

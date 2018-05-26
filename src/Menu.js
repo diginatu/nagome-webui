@@ -143,6 +143,11 @@ export default class Menu extends Component {
                                 key: "Slots"
                             });
                         }},
+                    {text: "About",
+                        icon: "fa-trash",
+                        fn: () => {
+                            ngm.appVersion();
+                        }},
                 ]
             },
         ];
@@ -157,12 +162,12 @@ export default class Menu extends Component {
         return (
             <ListItem key={m.text} onClick={this.handleMenuSelect.bind(this, m.fn)} tappable>
                 <div className="left">
-                        <Icon icon={m.icon} />
-                    </div>
-                    <div className="center">
-                        {m.text}
-                    </div>
-                </ListItem>
+                    <Icon icon={m.icon} />
+                </div>
+                <div className="center">
+                    {m.text}
+                </div>
+            </ListItem>
         );
     }
 
