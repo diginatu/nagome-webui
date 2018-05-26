@@ -135,7 +135,7 @@ export default class MainPage extends Component {
                 class="main_modal"
             >
                 <section>
-                    <img src={process.env.PUBLIC_URL + "favicon.ico"} />
+                    <img src={process.env.PUBLIC_URL + "/favicon.ico"} />
                     <div class="versions_text">
                         <p>
                             <span>
