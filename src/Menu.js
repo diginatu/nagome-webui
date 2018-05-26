@@ -144,7 +144,7 @@ export default class Menu extends Component {
                             });
                         }},
                     {text: "About",
-                        icon: "fa-trash",
+                        icon: "fa-info-circle",
                         fn: () => {
                             ngm.appVersion();
                         }},
