@@ -14,20 +14,20 @@ How to use
 Install dependencies.
 
 ~~~ sh
-yarn
+npm install
 ~~~
 
 This project is created by [create-react-app](https://github.com/facebookincubator/create-react-app).
 So you can start developing running following command.
 
 ~~~ sh
-yarn start
+npm start
 ~~~
 
 Create an optimized production build.
 
 ~~~ sh
-yarn run build
+npm run build
 ~~~
 
 To launch Nagome process and connect to it, you have to run an executable [here](https://github.com/diginatu/nagome-webapp_template/releases) at the top of this directory. 
