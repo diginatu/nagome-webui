@@ -71,7 +71,7 @@ export default class MainFrame extends Component {
                             visibility: ons.orientation.isPortrait()?"":"hidden",
                         }}
                     >
-                        <Icon icon='ion-navicon, material:md-menu' />
+                        <Icon icon='md-menu' />
                     </ToolbarButton>
                 </div>
                 <div

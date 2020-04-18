@@ -42,8 +42,8 @@ export default class DropArea extends Component {
                 onDrop={this.stopMovePage}
                 onDragOver={this.handleDropOver.bind(this)}
                 onDragLeave={this.handleDropLeave.bind(this)} >
-                <Icon size={50} icon="ion-link" />
-                <Icon size={20} icon="ion-chevron-down" />
+                <Icon size={50} icon="md-link" />
+                <Icon size={20} icon="md-chevron-down" />
                 <p>Drop link here</p>
             </div>
         );
