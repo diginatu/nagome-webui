@@ -9,6 +9,8 @@ coverage
 
 # production
 build
+app
+nagome_webui.zip
 
 # misc
 .DS_Store

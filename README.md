@@ -52,6 +52,7 @@ Release
 
 ``` sh
 # increase version number in package.json
+vim package.json
 git tag v?
 git push --tags
 ./RELEASE.sh
