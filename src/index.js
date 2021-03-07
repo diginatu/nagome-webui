@@ -7,6 +7,6 @@ import 'onsenui/css/onsen-css-components.css';
 import './site.css';
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('root')
+    <App />,
+    document.getElementById('root')
 );
